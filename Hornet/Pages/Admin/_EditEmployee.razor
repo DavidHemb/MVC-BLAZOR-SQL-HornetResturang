@@ -1,0 +1,63 @@
+﻿@using DataAccess.Models;
+@using Hornet_Models.ModelsDTO
+@using Hornet.Service
+@inject Hornet.Service.EmployeeService EmployeeService
+@inject IJSRuntime JSRuntime
+@attribute [Authorize(Roles = "Admin")]
+<div class="modal" tabindex="-1" role="dialog" style="display: @(modelVisible ? "block" : "none")">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Employee</h5>
+                <button type="button" class="close" @onclick="CloseModel">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Your input fields for editing employee details -->
+                <h5>Employee First Name</h5>
+                <input type="text" @bind="editingEmployee.UserName" /> <br /><br />                
+                <h5>Employee Phonenumber</h5>
+                <input type="text" @bind="editingEmployee.PhoneNumber" /> <br /><br />
+                <h5>Employee Department</h5>
+                <input type="text" @bind="editingEmployee.Department" /> <br /><br />
+                <div class="form-check">
+                    <label class="form-check-label" for="isEmployed">
+                        Is Employed
+                    </label>
+                    <input class="form-check-input" type="checkbox" id="isEmployedCheckbox" @bind="editingEmployee.IsEmployed" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CloseModel">Close</button>
+                <button type="button" class="btn btn-primary" @onclick="SaveChange">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public EmployeeDTO editingEmployee { get; set; } = new EmployeeDTO();
+
+    [Parameter]
+    public EventCallback<EmployeeDTO> OnUpDate { get; set; }
+
+    bool modelVisible = false;
+
+    public async Task ShowModel(EmployeeDTO employee)
+    {
+        editingEmployee = employee; // Set the employee to be edited
+        modelVisible = true;
+    }
+
+    public void CloseModel()
+    {
+        modelVisible = false;
+    }
+
+    public async Task SaveChange()
+    {
+        await OnUpDate.InvokeAsync(editingEmployee);
+        CloseModel();
+    }
+}

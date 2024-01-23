@@ -1,0 +1,296 @@
+﻿@page "/menu/productcategory/{categoryId:int}"
+@page "/menu"
+@using DataAccess.Data;
+@using DataAccess.Models
+@using DataAccess
+@using Microsoft.EntityFrameworkCore;
+@inject NavigationManager NavigationManager
+@inject Hornet.Service.ProductService ProductService
+@inject Hornet.Service.CategoryService CategoryService
+@inject Hornet.Service.ProductCategoryService ProductCategoryService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+<PageTitle>Meny</PageTitle>
+
+@if (Categories is not null)
+{
+    <!-- Looping out the buttons for the categories -->
+    <div class="container" style="overflow-y: auto;">
+        <div class="categories-container">
+            @foreach (var category in Categories)
+            {
+                <!-- On click, reload the page with only the selected category Id -->
+                <NavLink class="category-button" href="@($"menu/productcategory/{category.Id}")">
+                    @category.Name
+                </NavLink>
+            }
+        </div>
+    </div>
+}
+
+<!-- Show a window, that the custumer need to log in, to be able to place an order  -->
+<_LoginMessage @ref="loginMessage" OnModalVisibilityChanged="HandleModalVisibilityChanged"></_LoginMessage>
+<hr />
+<div>
+    <!-- A filter for allergens -->
+    <label>Allergener:</label>
+    <select @bind="selectedFilter">
+        <option value="None">Inga filter</option>
+        <option value="Vegan">Visa veganska produkter</option>
+        <option value="Lactose">Visa produkter utan laktos</option>
+        <option value="Gluten">Visa produkter utan gluten</option>
+    </select>
+</div>
+<hr />
+
+@if (Products is null)
+{
+    <!-- Show Loading... until the pruducts is loaded -->
+    <div>Loading...   </div>
+}
+else
+{
+    <!-- Loop out the products -->
+    <div class="container" style="overflow-y: auto;">
+        <div class="row">
+            @if (selectedFilter == "None")
+            {
+                @foreach (var item in Products)
+                {
+                    if (item.IsDeleted == false)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                @if (item.ImagePath != null)
+                                {
+                                    <img src="@item.ImagePath" class="card-img-top" alt="Card Image">
+                                }
+                                else
+                                {
+                                    <img src="" class="card-img-top" alt="Card Image">
+                                }
+                                <div class="card-body d-flex flex-column">
+                                    @if (item.Alcohol > 0)
+                                    {
+                                        <h5 class="card-title">@item.Name @item.Alcohol %</h5>
+                                    }
+                                    else
+                                    {
+                                        <h5 class="card-title">@item.Name</h5>
+                                    }
+                                    <h5 class="card-title">@(item.Price.ToString("0.00")) kr</h5>
+                                    <p class="card-text">@item.Description</p>
+                                    @if (item.Vegan)
+                                    {
+                                        <p class="card-text">Vegansk</p>
+                                    }
+                                    @if (item.Lactose)
+                                    {
+                                        <p class="card-text">Innehåller laktos</p>
+                                    }
+                                    @if (item.Gluten)
+                                    {
+                                        <p class="card-text">Innehåller gluten</p>
+                                    }
+
+
+                                </div>
+                                <AuthorizeView>
+                                    <Authorized>
+                                        <!-- If the customer is logged in, an order can be placed -->
+                                        <div class="card-footer">
+                                            <a href="@($"placeOrder/{item.Id}")" class="btn btn-success btn-block">Beställ</a>
+                                        </div>
+                                    </Authorized>
+                                    <NotAuthorized>
+                                        <!-- If the customer isn´t logged in, the login modal is shown -->
+                                        <div class="card-footer">
+                                            <button class="btn btn-primary" @onclick="() => OpenLoginModal()">
+                                                Beställ
+                                            </button>
+                                        </div>
+                                    </NotAuthorized>
+                                </AuthorizeView>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                Products = FilteredProducts();
+
+                @foreach (var item in Products)
+                {
+                    if (item.IsDeleted == false)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                @if (item.ImagePath != null)
+                                {
+                                    <img src="@item.ImagePath" class="card-img-top" alt="Card Image">
+                                }
+                                else
+                                {
+                                    <img src="" class="card-img-top" alt="Card Image">
+                                }
+                                <div class="card-body d-flex flex-column">
+                                    @if (item.Alcohol > 0)
+                                    {
+                                        <h5 class="card-title">@item.Name @item.Alcohol %</h5>
+                                    }
+                                    else
+                                    {
+                                        <h5 class="card-title">@item.Name</h5>
+                                    }
+                                    <h5 class="card-title">@(item.Price.ToString("0.00")) kr</h5>
+                                    <p class="card-text">@item.Description</p>
+                                    @if (item.Vegan)
+                                    {
+                                        <p class="card-text">Vegansk</p>
+                                    }
+                                    @if (item.Lactose)
+                                    {
+                                        <p class="card-text">Innehåller laktos</p>
+                                    }
+                                    @if (item.Gluten)
+                                    {
+                                        <p class="card-text">Innehåller gluten</p>
+                                    }
+
+
+                                </div>
+                                <AuthorizeView>
+                                    <Authorized>
+                                        <div class="card-footer">
+                                            <a href="@($"placeOrder/{item.Id}")" class="btn btn-success btn-block">Beställ</a>
+                                        </div>
+                                    </Authorized>
+                                    <NotAuthorized>
+                                        <div class="card-footer">
+                                            <button class="btn btn-primary" @onclick="() => OpenLoginModal()">
+                                                Beställ
+                                            </button>
+                                        </div>
+                                    </NotAuthorized>
+                                </AuthorizeView>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+    <div class="mb-4"></div>
+
+}
+
+
+@code {
+
+
+    [Parameter]
+    public int categoryId { get; set; }
+
+
+    private List<Category>? Categories { get; set; }
+
+    public List<Product>? Products;
+
+    private string selectedFilter = "None";
+
+    _LoginMessage loginMessage = new _LoginMessage();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        Categories = (List<Category>)await CategoryService.GetAllWithProducts();
+        if (categoryId > 0)
+        {
+            Products = (List<Product>)await ProductCategoryService.GetProductsByCategoryId(categoryId);
+        }
+        else if (selectedFilter == "None")
+        {
+            Products = (List<Product>)await ProductService.GetAll();
+        }
+        else if (selectedFilter != "None")
+        {
+            Products = FilteredProducts();
+        }
+    }
+
+    private List<Product> FilteredProducts()
+    {
+        if (Products == null || selectedFilter == "None")
+        {
+            return Products ?? new List<Product>();
+        }
+
+        switch (selectedFilter)
+        {
+            case "Vegan":
+                return Products.Where(p => p.Vegan).ToList();
+            case "Lactose":
+                return Products.Where(p => !p.Lactose).ToList();
+            case "Gluten":
+                return Products.Where(p => !p.Gluten).ToList();
+            default:
+                return Products;
+        }
+    }
+
+    private async Task SetFilter()
+    {
+        StateHasChanged(); // Update the component when the filter changes
+        await LoadProducts(); // Reload products based on the new filter
+    }
+
+    async Task OpenLoginModal()
+    {
+        await loginMessage.ShowModal();
+        StateHasChanged();
+    }
+
+    private bool loginModalVisible;
+
+
+    void HandleModalVisibilityChanged(bool isVisible)
+    {
+        loginModalVisible = isVisible;
+        StateHasChanged();
+    }
+
+}
+<style>
+    .categories-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .category-button {
+        margin: 5px;
+        padding: 10px;
+        background-color: lightgray;
+        color: black;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>

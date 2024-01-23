@@ -1,0 +1,201 @@
+﻿@using DataAccess.Models;
+@using Hornet_Models.ModelsDTO;
+@using Hornet.Service;
+@using Microsoft.AspNetCore.Identity;
+@using AutoMapper;
+@inject Hornet.Service.EmployeeService EmployeeService
+@inject IJSRuntime JSRuntime
+@page "/ShowEmployees"
+@inject EmployeeService EmployeeService
+@inject IMapper Mapper
+@attribute [Authorize(Roles = "Admin")]
+<div class="container">
+    <AdminHeader></AdminHeader>
+
+    <h3>Lista över anställda</h3>
+
+
+    @if (employees != null && employees.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>AnvändarNamn</th>
+                    <th>Email</th>
+                    <th>Telefonnummer</th>
+                    <th>Avdelning</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in employees)
+                {
+                    <tr>
+                        <td>@employee.UserName</td>
+                        <td>@employee.Email</td>
+                        <td>@employee.PhoneNumber</td>
+                        <td>@employee.Department</td>
+                        <td>
+                            <button class="btn-outline-danger" @onclick="@(() => ConfirmDelete(employee.Id, employee.UserName))">Delete</button>
+                            <button class="btn btn-primary" @onclick="() => EditEmployee(employee)">Edit</button>
+                        </td>
+                    </tr>
+                }
+                <_EditEmployee @ref="editEmployee" OnUpDate="UpdateEmployee"></_EditEmployee>
+
+            </tbody>
+        </table>
+        <button class="btn btn-primary" @onclick="OpenCreateModel">Add New Employee</button>
+        <_AddEmployee @ref="addEmployee" OnCreate="CreateEmployee"></_AddEmployee>
+
+    }
+    else
+    {
+        <p>Inga anställda hittades</p>
+    }
+
+
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 20px auto; /* Centering and adding a margin of 20px around the page */
+    }
+</style>
+
+
+@code {
+    List<EmployeeDTO> employees;
+    EmployeeDTO editingEmployee;
+    Employee updateEmployee;
+    bool isCreateFormVisible = false;
+    _AddEmployee addEmployee;
+    _EditEmployee editEmployee;
+
+    [Parameter]
+    public EventCallback<EmployeeDTO> OnUpdate { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        employees = (await EmployeeService.GetAll()).ToList();
+    }
+
+    async Task ConfirmDelete(string employeeId, string employeeName)
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the employee '{employeeName}'?");
+
+        if (confirmed)
+        {
+            var success = await EmployeeService.DeleteEmployee(employeeId);
+
+            if (success)
+            {
+                employees.RemoveAll(e => e.Id == employeeId);
+                StateHasChanged();
+            }
+            else
+            {
+                Console.WriteLine("Det gick ej att ta bort den anställda");
+            }
+        }
+    }    
+
+    async Task CreateEmployee(Employee newEmployee)
+    {        
+        string password = newEmployee.UserName + "1!";
+        string email = newEmployee.UserName + "@mail.com"; 
+        string hashPassword = HashPassword(password);
+        string userName = newEmployee.UserName + "@mail.com";
+        newEmployee.UserName = userName;
+        newEmployee.PasswordHash = hashPassword;
+        newEmployee.Email = email;
+        newEmployee.NormalizedEmail = newEmployee.Email.ToUpper();
+        newEmployee.EmailConfirmed = true;
+        newEmployee.PhoneNumberConfirmed = true;
+        newEmployee.EmployedDate = DateTime.Now;
+        newEmployee.TwoFactorEnabled = false;
+        newEmployee.LockoutEnabled = true;
+        newEmployee.NormalizedUserName = newEmployee.UserName.ToUpper();        
+        var response = await EmployeeService.Create(newEmployee);
+
+        if (!response)
+        {
+            // Användarnamnet är upptaget
+            await JSRuntime.InvokeVoidAsync("alert", $"Användarnamnet '{newEmployee.UserName}' är redan upptaget.");
+        }
+        else
+        {
+            employees = (await EmployeeService.GetAll()).ToList();
+            StateHasChanged();
+        }
+    }
+
+    async void EditEmployee(EmployeeDTO employee)
+    {
+        await editEmployee.ShowModel(employee);
+    }
+
+    async Task UpdateEmployee(EmployeeDTO updatedEmployee)
+    {
+        try
+        {
+            var existingEmployee = employees.FirstOrDefault(e => e.Id != updatedEmployee.Id &&
+                                                              e.UserName.Equals(updatedEmployee.UserName, StringComparison.OrdinalIgnoreCase));
+
+            if (existingEmployee != null)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", $"Category with name '{updatedEmployee.UserName}' already exists.");
+                employees = (List<EmployeeDTO>)await EmployeeService.GetAll();
+                StateHasChanged();
+                return;
+            }
+
+            var response = await EmployeeService.UpdateEmployee(updatedEmployee);
+
+            if (response)
+            {
+                employees = (await EmployeeService.GetAll()).ToList();
+                StateHasChanged();
+            }                       
+            else
+            {
+                Console.WriteLine("Failed to update employee.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception: {ex.Message}");
+        }
+    }
+
+    public async Task SaveChanges()
+    {
+        var success = await EmployeeService.UpdateEmployee(editingEmployee);
+
+        if (success)
+        {
+            employees = (await EmployeeService.GetAll()).ToList();
+            StateHasChanged();
+        }
+        else
+        {
+            Console.WriteLine("Misslyckades med att uppdatera användaren.");
+        }
+    }
+
+    public void CancelEdit()
+    {
+        isCreateFormVisible = false;
+    }
+
+    async void OpenCreateModel()
+    {
+        await addEmployee.ShowModel();
+    }
+
+    public string HashPassword(string password)
+    {
+        var passwordHasher = new PasswordHasher<string>();
+        return passwordHasher.HashPassword(null, password);
+    }
+}

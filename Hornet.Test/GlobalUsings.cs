@@ -1,0 +1,12 @@
+global using Xunit;
+global using AutoMapper;
+global using Business.Repository;
+global using Business.Repository.IRepository;
+global using DataAccess.Data;
+global using DataAccess.Models;
+global using FakeItEasy;
+global using FluentAssertions;
+global using Hornet_Models.ModelsDTO;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore;

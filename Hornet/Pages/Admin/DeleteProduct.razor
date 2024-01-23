@@ -1,0 +1,26 @@
+﻿@using DataAccess
+@using DataAccess.Models;
+@using DataAccess.Data;
+@using Microsoft.EntityFrameworkCore;
+@using Hornet.Service;
+@inject Hornet.Service.ProductService ProductService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@inject AppDbContext Context
+@page "/DeleteProduct"
+@attribute [Authorize(Roles = "Admin")]
+<PageTitle>DeleteProduct</PageTitle>
+<AdminHeader></AdminHeader>
+@code {
+    private int ProductId => ProductService.GetProductId();
+    private Task Delete(int ProductId)
+    {
+        var results = ProductService.Delete(ProductId);
+        return results;
+    }
+}
+@if (ProductId != null)
+{
+    @Delete(ProductId);
+    NavigationManager.NavigateTo("/ShowProducts");
+}

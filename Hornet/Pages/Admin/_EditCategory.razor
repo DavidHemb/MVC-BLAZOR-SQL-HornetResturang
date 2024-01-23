@@ -1,0 +1,65 @@
+﻿@using DataAccess.Models;
+@using Hornet.Service;
+@inject Hornet.Service.CategoryService CategoryService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@inject IJSRuntime JSRuntime
+@page "/_EditCategory"
+@attribute [Authorize(Roles = "Admin")]
+<!-- _EditCategory.razor -->
+
+<div class="modal" tabindex="-1" role="dialog" style="display: @(modalVisible ? "block" : "none")">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ändra Kategori</h5>
+                <button type="button" class="close" @onclick="CloseModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Kategori Namn</h5>
+                <input type="text" @bind="editedCategory.Name" /> <br /><br />
+                <label for="vatRateInput">VAT Rate (0-25)</label>
+                <input type="number" id="vatRateInput" @bind="editedCategory.VatRate" min="0" max="25" step="1" />
+                <div class="form-check">
+                    <label class="form-check-label" for="isLiquidCheckbox">
+                        Drickbart
+                    </label>
+                    <input class="form-check-input" type="checkbox" id="isLiquidCheckbox" @bind="editedCategory.Liquid" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CloseModal">Stäng</button>
+                <button type="button" class="btn btn-primary" @onclick="SaveChanges">Spara Ändringar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Category editedCategory { get; set; } // Pass the selected category for editing
+
+    [Parameter]
+    public EventCallback<Category> OnEdit { get; set; } // Callback for saving changes
+
+    bool modalVisible = false;
+
+    public async Task ShowModal()
+    {
+        modalVisible = true;
+    }
+
+    public void CloseModal()
+    {
+        modalVisible = false;
+    }
+
+    public async Task SaveChanges()
+    {
+        await OnEdit.InvokeAsync(editedCategory);
+        CloseModal();
+    }
+}
+

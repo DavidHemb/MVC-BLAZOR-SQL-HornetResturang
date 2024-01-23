@@ -1,0 +1,111 @@
+﻿@using Hornet.Service;
+@using Microsoft.AspNetCore.Identity;
+@inject CartService CartService
+@inject UserManager<IdentityUser> UserManager
+<AuthorizeView>
+    <Authorized>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                @if (CartService.CartItems.Count() != 0)
+                {
+                    <NavLink class="nav-link" href="cart">
+                        <img src="/img/BabyTransport.jpg" width="40" height="40" />@CartService.CartItems.Count()
+                    </NavLink>
+                }
+                else
+                {
+                    <NavLink class="nav-link" href="cart">
+                        <img src="/img/BabyTransport.jpg" width="40" height="40" />
+                    </NavLink>
+                } 
+                <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown show">
+                            <NavLink class="nav-link dropdown-toggle" @onclick="() => expandSubNavSettings = !expandSubNavSettings" id="navbarDropdown">
+                                <img style="border-radius:18px;" src="/img/Japanese.jpg" alt="error" width="40" height="40" />
+                                @context.User.Identity?.Name
+                            </NavLink>
+                            @if (expandSubNavSettings)
+                            {
+                            <li class="dropdown-menu show" aria-labelledby="navbarDropdown" @onclick="() => expandSubNavSettings = !expandSubNavSettings">
+                            <li>
+                                <NavLink class="nav-link" href="Identity/Account/Manage">
+                                    Profile
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="cart">
+                                    Kundkorg
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="MyOrders">
+                                    Mina beställningar
+                                </NavLink>
+                            </li>
+                                    @{
+                                        bool isEmployee = false;
+                                        if (context.User.IsInRole("Employee") || context.User.IsInRole("Admin"))
+                                        {
+                                            isEmployee = true;
+                                        }
+                                        if (isEmployee)
+                                        {
+                                            <li class="nav-item">
+                                                <NavLink class="nav-link" href="/Employee/EmployeePanel">
+                                                    EmployeePanel
+                                                </NavLink>
+                                            </li>
+                                        }
+                                    }
+                            
+                                    @{
+                                        bool isAdmin = context.User.IsInRole("Admin");
+                                        if (isAdmin)
+                                        {
+                                            <li class="nav-item">
+                                                <NavLink class="nav-link" href="AdminPanel">
+                                                    AdminPanel
+                                                </NavLink>
+                                            </li>
+                                        }
+                                    }
+                                
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li class="nav-item">
+                                <p></p>
+                                <form method="post" action="Identity/Account/Logout">
+                                    <button type="submit" class="nav-link btn btn-link">Logga ut</button>
+                                </form>
+                            </li>
+                            </li>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        @code {
+            bool collapseNavMenu = true;
+            private bool expandSubNavSettings;
+            string baseMenuClass = "navbar-collapse d-sm-inline-flex flex-sm-row-reverse";
+            string NavMenuCssClass => baseMenuClass + (collapseNavMenu ? " collapse" : "");
+            void ToggleNavMenu()
+            {
+            if (!expandSubNavSettings)
+            {
+                collapseNavMenu = !collapseNavMenu;
+            }
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+        <a href="Identity/Account/Register">Registrera dig</a>
+        <a href="Identity/Account/Login">Logga in</a>
+    </NotAuthorized>
+</AuthorizeView>

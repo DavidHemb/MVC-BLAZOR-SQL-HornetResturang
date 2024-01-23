@@ -1,0 +1,149 @@
+﻿@page "/addselectedproduct/{orderId:int?}/{productId:int?}"
+@using DataAccess.Data;
+@using DataAccess.Models
+@using DataAccess
+@using Hornet_Models
+@using Hornet_Models.ModelsDTO;
+@using Microsoft.EntityFrameworkCore;
+@inject NavigationManager NavigationManager
+@inject AppDbContext Context
+@inject Hornet.Service.CartService CartService
+@inject Hornet.Service.ProductService ProductService
+@inject Hornet.Service.OrderService OrderService
+
+
+<PageTitle>Lägg till</PageTitle>
+
+@if (product is null)
+{
+    <!--Show Loading until the product is loaded-->
+    <div>Loading...   </div>
+
+}
+else{
+<div class="container" style="overflow-y: auto; max-width: 400px;">
+    <div class="row">
+        <div class="col-md-10 mx-auto mb-4">
+            <div class="card h-100">
+                    <img src="@product.ImagePath" class="card-img-top" alt="Card Image">
+                <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Description</p>
+                </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="input-group">
+                            <!--Adjust the quantity to be added-->
+                             <div class="input-group-prepend">
+                                <button class="btn btn-outline-secondary" type="button" @onclick="DecreaseQuantity">-</button>
+                             </div>
+
+                             <input class="form-control" style="width: 8px"id="quantity" value="@Quantity" readonly />
+                             
+                             <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" @onclick="IncreaseQuantity">+</button>
+                             </div>
+
+                        </div>
+                        <div class="ml-auto">
+                            <!--Confirm adding the product/products-->
+                            <a class="btn btn-success" @onclick="() => AddProduct()" >Beställ</a>
+                        </div>
+                    </div>
+            </div>
+        </div> 
+    </div>
+</div>
+<div class="mb-4"></div>
+
+
+}
+@code {
+
+
+    [Parameter]
+    public int productId { get; set; }
+
+    [Parameter]
+    public int orderId { get; set; }
+
+    private Product? product { get; set; }
+
+    private List<OrderProduct> orderProducts;
+    private List<OrderProductDTO> orderProductsToAdd = new();
+
+
+    private int Quantity { get; set; } = 1;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (productId > 0)
+        {
+            // Get the product by productId
+            product = await ProductService.GetByProductId(productId);
+
+        }
+    }
+
+    private void IncreaseQuantity()
+    {
+        Quantity++;
+    }
+
+    private void DecreaseQuantity()
+    {
+        if(Quantity > 1)
+        {
+            Quantity--;
+        }
+    }
+
+    private async Task AddProduct()
+    {
+        //Get all products in order, from DB
+        orderProducts = (List<OrderProduct>)await ProductService.GetProductsByOrderId(orderId);
+
+            foreach (var item in orderProducts)
+            {
+
+                if (item.ProductId == productId)
+                {
+                    //If order contains product, decrease quantity.
+                    item.Quantity += Quantity;
+
+                    //Cast to a OrderProductDTO
+                    foreach (var item2 in orderProducts)
+                    {
+                        orderProductsToAdd.Add(new OrderProductDTO
+                            {
+                                ProductId = item2.ProductId,
+                                Quantity = item2.Quantity
+                            });
+                    }
+                    //Save to DB
+                    var UpdateResult = await OrderService.UpdateOrderProducts(orderId, orderProductsToAdd);
+
+                }
+            else
+            {
+
+                //If order not contains product, add product.
+                var orderProduct = new OrderProductDTO
+                    {
+                        OrderId = orderId,
+                        ProductId = productId,
+                        Quantity = Quantity
+                    };
+
+                var result = await OrderService.AddProduct(orderProduct);
+            }
+            }
+           
+
+        
+        // Go back to the overview for the current order.
+        NavigationManager.NavigateTo($"/MyOrders/ChangeOrder/{orderId}");
+
+    }
+}
+
+

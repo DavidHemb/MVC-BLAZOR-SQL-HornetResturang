@@ -1,0 +1,52 @@
+﻿@page "/opentime"
+<!DOCTYPE html>
+<html lang="en">
+
+ <!-- A box to show the opentimes -->
+<body>
+    <div class="container">
+        <img class="full-width" src="/img/burgers3.jpg">
+        <div class="opening-hours">
+            <h2>Öppettider</h2>
+            <p>Måndag-Fredag: 10:00 - 23:00</p>
+            <p>Lördag-Söndag: 12:00 - 23:00</p>
+        </div>
+    </div>
+</body>
+<head>
+    <style>
+        /* Container holding the image and the text */
+        .container {
+            position: relative;
+            width: 100vw;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        /* Image with full width and no margin or padding. */
+        .full-width {
+            width: 100vw; /* The width of the parent (.container) */
+            height: auto;
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* popup showing opening-hours */
+        .opening-hours {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 1px;
+            text-align: center;
+        }
+    </style>
+</head>
+</html>
+
+

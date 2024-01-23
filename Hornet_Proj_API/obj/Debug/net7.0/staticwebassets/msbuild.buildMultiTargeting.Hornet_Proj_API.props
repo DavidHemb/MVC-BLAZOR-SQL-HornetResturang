@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Hornet_Proj_API.props" />
+</Project>

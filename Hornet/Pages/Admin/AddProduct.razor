@@ -1,0 +1,106 @@
+﻿@using DataAccess
+@using DataAccess.Models;
+@using DataAccess.Data;
+@using Microsoft.EntityFrameworkCore;
+@using Hornet.Service;
+@inject AppDbContext Context
+@inject ProductService ProductService
+@inject CategoryService CategoryService
+@inject ProductCategoryService ProductCategoryService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@inject IJSRuntime JSRuntime
+@page "/AddProduct"
+@attribute [Authorize(Roles = "Admin")]
+@code
+{
+    bool IsLiquid = false;
+    private Product newproduct = new Product { };
+    public List<Product>? products;
+    private List<Category> categories;
+    int categoryId;
+    protected override async Task OnInitializedAsync()
+    {
+        IsLiquid = false;
+        categories = (List<Category>)await CategoryService.GetAll();
+        products = (List<Product>)await ProductService.GetAll();
+    }
+    private async void HandleFormSubmit(Product newproduct, int categoryId)
+    {
+        if (products != null && products.Any(c => c.Name.Equals(newproduct.Name, StringComparison.OrdinalIgnoreCase)))
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"{newproduct.Name}");
+            return;
+        }
+        var response = await ProductService.Create(newproduct);
+
+        if (response)
+        {
+            var addedProduct = await ProductService.GetByProductName(newproduct.Name);            
+
+            ProductCategory prodcat = new ProductCategory()
+                {
+                    CategoryId = categoryId,
+                    ProductId = addedProduct.Id,
+                    Product = null,
+                    Category = null,
+                };
+            await ProductCategoryService.Create(prodcat);
+        }
+
+        NavigationManager.NavigateTo("/ShowProducts");
+    }
+    void OnCategoryChange(ChangeEventArgs e)
+    {
+        categoryId = Convert.ToInt32(e.Value);
+    }
+}
+<PageTitle>AddProduct</PageTitle>
+<AdminHeader></AdminHeader>
+<h1>AddProduct</h1>
+<form @onsubmit="() => HandleFormSubmit(newproduct,categoryId)">
+    <label>Name (Name)</label><br>
+    <input type="text" @bind="@newproduct.Name" required /><br>
+    <label>Beskrivning (Description)</label><br>
+    <input type="text" @bind="@newproduct.Description" required /><br>
+    <label>Pris (Price) (sek) of product</label><br>
+    <input type="text" @bind="@newproduct.Price" required /><br>
+    <label>Intern Bild länk (ImagePath) (/assets/img/...)</label><br>
+    <input type="text" @bind="@newproduct.ImagePath" required /><br>
+
+    <label for="IsLiquid">Dricka(Is Liquid)</label><br>
+    <input type="checkbox" id="IsLiquid" @bind="IsLiquid" /><br>
+    @if (IsLiquid == true)
+    {
+        <label>Alcohole (%)</label>
+
+        <br>
+        <input type="text" @bind="@newproduct.Alcohol" />
+
+        <br>
+    }
+    else
+    {
+        <input type="hidden" value="0" bind="@newproduct.Alcohol" />
+    }
+    <label>Lactos (Lactose)</label><br>
+    <input type="checkbox" @bind="@newproduct.Lactose" /><br>
+    <label>Gluten (Gluten)</label><br>
+    <input type="checkbox" @bind="@newproduct.Gluten" /><br>
+    <label>Vegan (Vegan)</label><br>
+    <input type="checkbox" @bind="@newproduct.Vegan" /><br>
+    @if (categories != null)
+    {
+        <select class="form-select" aria-label="Choose category" @onchange="OnCategoryChange">
+            <option selected>Välj Categori (Pick Category)</option>
+            @foreach (var category in categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+    }
+    }
+    <label>IsDeleted</label><br>
+    <input type="checkbox" @bind="@newproduct.IsDeleted" /><br>
+    <input type="submit" value="Enter" />
+</form>

@@ -1,0 +1,206 @@
+﻿@page "/MyOrders/ChangeOrder/{orderId:int?}"
+@using Hornet_Models.ModelsDTO;
+@using Hornet.Service;
+@using DataAccess.Models;
+@inject Hornet.Service.OrderProductsService orderProductService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@using System.Security.Claims;
+@inject OrderService OrderService
+@inject ProductService ProductService
+@inject ChangeCartService ChangeCartService
+@inject NavigationManager NavigationManager
+
+@inherits ComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div class="container">
+
+    <PageTitle>Change Order</PageTitle>
+
+    <h1>Ändra order</h1>
+    <!-- A button to go back to previos page -->
+    <button type="submit" class="btn btn-primary" @onclick="NavigateBack">Tillbaka</button>
+    @if (order is not null)
+    {
+        @if (ChangeCartService.GetTotalQuantity() > 0)
+        {
+            <table class="table">
+                <thead>
+                    <!-- The header of the table -->
+                    <tr>
+                        <th>Produkt</th>
+                        <th></th>
+                        <th>Antal</th>
+                        <th></th>
+                        <th>Pris</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop out the items in the cart -->
+                    @foreach (var cartItem in ChangeCartService.GetCartItems())
+                    {
+                        <tr>
+                            <td>@cartItem.Key.Name</td>
+                            <td>
+                                <div class="input-group-prepend">
+                                    <!-- Adjust the quantity for the product in this row, decrease  -->
+                                    <button class="btn btn-outline-secondary" type="button"
+                                    @onclick="() => ChangeCartService.DecreaseQuantity(cartItem.Key, cartItem.Value)">
+                                        -
+                                    </button>
+                                </div>
+                            </td>
+                            <td>@cartItem.Value</td>
+                            <td>
+                                <div class="input-group-prepend">
+                                    <!-- Adjust the quantity for the product in this row, increase  -->
+                                    <button class="btn btn-outline-secondary" type="button"
+                                    @onclick="() => ChangeCartService.IncreaseQuantity(cartItem.Key, cartItem.Value)">
+                                        +
+                                    </button>
+                                </div>
+                            </td>
+                            <!-- Calculate the price for this row  -->
+                            <td>@(cartItem.Key.Price * cartItem.Value)</td>
+                            <td>
+                                <!-- Delete this row/product in cart  -->
+                                <button class="btn btn-outline-danger"
+                                    @onclick="() => ChangeCartService.RemoveFromCart(cartItem.Key)">
+                                    Ta bort
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tbody>
+                    <tr>
+                        <!-- Show the sum for the order  -->
+                        <td>Summa</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>@(ChangeCartService.sum.ToString("0.00"))</td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <textarea @bind="ChangeCartService.OrderMessage" placeholder="Meddelande till resturangen..."
+                          style="width: 40%; height: 100%;"></textarea>
+            </div>
+
+        }
+        else
+        {
+            <!-- A message for the customer if the cart is empty  -->
+            <p>Din kundvagn är tom.</p>
+        }
+        <!-- Button to add a new product  -->
+        <button type="submit" class="btn btn-primary" @onclick="SelectProduct">Lägg till produkt</button>
+        <!-- Button to save changes in the order  -->
+        <button type="submit" class="btn btn-primary" @onclick="UpDateAndNavigate">Uppdatera</button>
+    }
+
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 20px auto; /* Centering and adding a margin of 20px around the page. */
+    }
+</style>
+
+
+
+
+
+@code {
+
+    [Parameter]
+    public int orderId { get; set; }
+    private List<OrderProduct> orderProducts;
+    private OrderDTO order;
+    private string orderMessage;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        <!-- Clear the cart before starting a new session  -->
+        ChangeCartService.ClearCart();
+        <!-- Get all the products for the specific orderId in database -->
+        orderProducts = (List<OrderProduct>)await ProductService.GetProductsByOrderId(orderId);
+        <!-- Get the orderinformation for the specific orderId in database -->
+        order = await OrderService.GetOrderByOrderId(orderId);
+        ChangeCartService.OrderMessage = order.Order.OrderMessage;
+
+        <!-- Put the products in the cart, a dictionary, to avoid multiple rows for the sam product  -->
+        foreach (var item in orderProducts)
+        {
+            var product = await ProductService.GetByProductId(item.ProductId);
+            ChangeCartService.AddToCart(product, item.Quantity);
+
+        }
+     
+    
+        ChangeCartService.GetTotalQuantity();
+        ChangeCartService.CalculateTotal();
+
+    }
+    private async Task UpdateOrder()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var orderProducts = new List<OrderProductDTO>();
+
+        string message = ChangeCartService.OrderMessage;
+
+        foreach (var cartItem in ChangeCartService.GetCartItems())
+        {
+            <!-- Create a new OrderProductDTO -->
+            orderProducts.Add(new OrderProductDTO
+            {
+                    ProductId = cartItem.Key.Id,
+                    Quantity = cartItem.Value
+            });
+        }
+        <!-- Update ordermessage -->
+        var result = await OrderService.UpdateOrderMessage(orderId, message);
+        <!-- Update products in order -->
+        var result2 = await OrderService.UpdateOrderProducts(orderId, orderProducts);
+
+    }
+    private async Task SelectProduct()
+    {
+        <!-- Update order to avoid loosing current changes in cart -->
+        await UpdateOrder();
+        <!-- Go to selectproduct to be able to see and select a new product to add to cart -->
+        NavigationManager.NavigateTo($"/selectproduct/{orderId}");
+
+    }
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("MyOrders");
+    }
+    private async Task UpDateAndNavigate()
+    {
+        <!-- Update order to avoid loosing current changes in cart -->
+        await UpdateOrder();
+        <!-- Navigate to the overview for the customer orders -->
+        NavigationManager.NavigateTo("MyOrders");
+
+    }
+   
+
+    
+  
+   
+}
+  
+
+    
+
+
+

@@ -1,0 +1,221 @@
+﻿@using ChartJs.Blazor.BarChart
+@using Hornet_Models.ModelsDTO;
+
+@page "/CustomerTraffic"
+@attribute [Authorize(Roles = "Admin")]
+@inject Hornet.Service.OrderService _orderService
+
+<div class="container">
+    <h3>Customer Traffic</h3>
+
+
+    @if (Orders != null)
+    {
+
+        <p>Orders made hour by hour since start</p>
+        <Chart Config="_barConfig" Height="1" Width="2"></Chart>
+
+    }
+
+    <div>
+        <label for="fromDate">From Date:</label>
+        <InputDate id="fromDate" @bind-Value="FromDate"></InputDate>
+    </div>
+
+    <div>
+        <label for="toDate">To Date:</label>
+        <InputDate id="toDate" @bind-Value="ToDate"></InputDate>
+    </div>
+
+    <button class="btn btn-success" @onclick="BarConfigDays">See chart</button>
+
+
+    @if (seeChart)
+    {
+        <p>Orders made each day on between the selected dates</p>
+        <Chart Config="_barConfigDays"></Chart>
+    }
+    @code {
+
+        private BarConfig _barConfig;
+        private BarConfig _barConfigDays;
+        private List<OrderStatisticsDTO> Orders;
+        private List<OrderStatisticsDTO> OrdersForDate;
+        private DateTime FromDate { get; set; } = DateTime.Today;
+        private DateTime ToDate { get; set; } = DateTime.Today;
+        private bool seeChart { get; set; } = false;
+
+        protected override async Task OnInitializedAsync()
+        {
+
+            Orders = (List<OrderStatisticsDTO>)await _orderService.GetAllOrderStatistics();
+            OrdersForDate = (List<OrderStatisticsDTO>)await _orderService.GetAllOrderStatisticsForDate();
+
+
+            await BarConfigAllTimeOrders();            
+        }
+
+        private void SeeChart()
+        {
+            seeChart = !seeChart;
+        }
+
+        //Orders made by by all time, no matter date.
+        private async Task BarConfigAllTimeOrders()
+        {
+
+            _barConfig = new BarConfig();
+
+            _barConfig.Options = new BarOptions
+            {
+                Responsive = true,
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Orders made by hour"
+                }
+            };
+
+            //Add labels tot he chart
+            for (int i = 0; i < 25; i++)
+            {
+                if (i < 10)
+                    _barConfig.Data.Labels.Add("0" + i + ":00");
+
+                if (i > 9)
+                    _barConfig.Data.Labels.Add(i + ":00");
+            }
+
+            int[] orderQuantities = new int[24];
+
+            foreach (var item in Orders)
+            {
+
+                if (item.DateTime.Hour >= 0 && item.DateTime.Hour < 25)
+                    orderQuantities[item.DateTime.Hour] = item.Quantity;
+            }
+
+            var dataset = new BarDataset<int>(orderQuantities)
+            {
+                BackgroundColor = new[]
+            {
+    ColorUtil.ColorHexString(255, 0, 0),
+    ColorUtil.ColorHexString(0, 255, 0),
+    ColorUtil.ColorHexString(0, 0, 255),
+    ColorUtil.ColorHexString(128, 0, 128),
+    ColorUtil.ColorHexString(0, 128, 128),
+    ColorUtil.ColorHexString(128, 128, 0),
+    ColorUtil.ColorHexString(255, 165, 0),
+    ColorUtil.ColorHexString(255, 255, 0),
+    ColorUtil.ColorHexString(0, 255, 255),
+    ColorUtil.ColorHexString(255, 0, 255),
+    ColorUtil.ColorHexString(192, 192, 192),
+    ColorUtil.ColorHexString(128, 128, 128),
+    ColorUtil.ColorHexString(255, 99, 71),
+    ColorUtil.ColorHexString(0, 128, 0),
+    ColorUtil.ColorHexString(0, 0, 128),
+    ColorUtil.ColorHexString(210, 180, 140),
+    ColorUtil.ColorHexString(75, 0, 130),
+    ColorUtil.ColorHexString(255, 192, 203),
+    ColorUtil.ColorHexString(255, 20, 147),
+    ColorUtil.ColorHexString(255, 228, 181),
+    ColorUtil.ColorHexString(107, 142, 35),
+    ColorUtil.ColorHexString(100, 149, 237),
+    ColorUtil.ColorHexString(255, 69, 0)
+    }
+            };
+
+            _barConfig.Data.Datasets.Add(dataset);
+        }
+        private async Task BarConfigDays()
+        {
+            SeeChart();
+            _barConfigDays = new BarConfig();
+
+            _barConfigDays.Options = new BarOptions
+            {
+                Responsive = true,
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Orders made by day"
+                }
+            };
+
+
+            var currentDate = FromDate;
+            List<DateTime> dates = new List<DateTime>();
+
+            //Add labels to the chart
+            while (currentDate <= ToDate)
+            {
+                _barConfigDays.Data.Labels.Add($"{currentDate:yyyy-MM-dd}");
+                dates.Add(currentDate);
+                currentDate = currentDate.AddDays(1);
+            }
+
+            int daysBetween = (int)(ToDate.Date - FromDate.Date).TotalDays + 1;
+
+            int[] orderQuantities = new int[daysBetween];
+            int indexPosition = 0;
+
+
+            var fromDate = FromDate;
+            var toDate = ToDate;
+
+
+            foreach (var date in dates)
+            {
+
+                foreach (var item in OrdersForDate)
+                {
+                    if (item.DateTime.Day == date.Day && item.DateTime.Month == date.Month && item.DateTime.Year == date.Year)
+                        orderQuantities[indexPosition] = item.Quantity;
+                }
+
+                indexPosition++;
+            }
+
+            var dataset = new BarDataset<int>(orderQuantities)
+            {
+                BackgroundColor = new[]
+            {
+    ColorUtil.ColorHexString(255, 0, 0),
+    ColorUtil.ColorHexString(0, 255, 0),
+    ColorUtil.ColorHexString(0, 0, 255),
+    ColorUtil.ColorHexString(128, 0, 128),
+    ColorUtil.ColorHexString(0, 128, 128),
+    ColorUtil.ColorHexString(128, 128, 0),
+    ColorUtil.ColorHexString(255, 165, 0),
+    ColorUtil.ColorHexString(255, 255, 0),
+    ColorUtil.ColorHexString(0, 255, 255),
+    ColorUtil.ColorHexString(255, 0, 255),
+    ColorUtil.ColorHexString(192, 192, 192),
+    ColorUtil.ColorHexString(128, 128, 128),
+    ColorUtil.ColorHexString(255, 99, 71),
+    ColorUtil.ColorHexString(0, 128, 0),
+    ColorUtil.ColorHexString(0, 0, 128),
+    ColorUtil.ColorHexString(210, 180, 140),
+    ColorUtil.ColorHexString(75, 0, 130),
+    ColorUtil.ColorHexString(255, 192, 203),
+    ColorUtil.ColorHexString(255, 20, 147),
+    ColorUtil.ColorHexString(255, 228, 181),
+    ColorUtil.ColorHexString(107, 142, 35),
+    ColorUtil.ColorHexString(100, 149, 237),
+    ColorUtil.ColorHexString(255, 69, 0)
+    }
+            };
+
+            _barConfigDays.Data.Datasets.Add(dataset);
+        }
+        
+    }
+
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 20px auto; /* Centering and adding a margin of 20px around the page. */
+    }
+</style>

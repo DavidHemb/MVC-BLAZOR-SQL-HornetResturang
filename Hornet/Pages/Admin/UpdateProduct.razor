@@ -1,0 +1,80 @@
+﻿@using DataAccess
+@using DataAccess.Models;
+@using DataAccess.Data;
+@using Microsoft.EntityFrameworkCore;
+@using Hornet.Service;
+@inject Hornet.Service.ProductService ProductService
+@inject NavigationManager NavigationManager
+@inject HttpClient httpclient
+@inject IJSRuntime JSRuntime
+@inject AppDbContext Context
+@page "/UpdateProduct"
+@attribute [Authorize(Roles = "Admin")]
+@code{
+    private Product newproduct = new Product { };
+    public List<Product>? products;
+    private int ProductId => ProductService.GetProductId();
+    private Product product;
+    private Category[]? CategoryList { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        CategoryList = await Context.Categories.ToArrayAsync();
+        product = await ProductService.GetByProductId(ProductId);
+        products = (List<Product>)await ProductService.GetAll();
+    }
+    private async void HandleFormSubmit(Product newproduct)
+    {        
+        await ProductService.Update(newproduct);
+        NavigationManager.NavigateTo("/ShowProducts");
+    }
+    bool IsLiquid = false;
+}
+<PageTitle>UpdateProduct</PageTitle>
+<AdminHeader></AdminHeader>
+<h1>UpdateProduct</h1>
+@if (product != null)
+{
+    <form @onsubmit="() => HandleFormSubmit(newproduct)">
+        <label>Name (Name)</label><br>
+        <input type="text" @bind="@newproduct.Name" placeholder="@product.Name" required /><br>
+        <label>Beskrivning (Description)</label><br>
+        <input type="text" @bind="@newproduct.Description" placeholder="@product.Description" required /><br>
+        <label>Pris (Price) (sek) of product</label><br>
+        <input type="text" @bind="@newproduct.Price" placeholder="@product.Price"  required /><br>
+        <label>Intern Bild länk (ImagePath) (/assets/img/...)</label><br>
+        <input type="text" @bind="@newproduct.ImagePath" placeholder="@product.ImagePath" required /><br>
+
+        <label for="IsLiquid">Dricka(Is Liquid)</label><br>
+        <input type="checkbox" id="IsLiquid" @bind="IsLiquid"/><br>
+        @if (IsLiquid == true)
+        {
+            <label>Alcohole (%)</label><br>
+            <input type="text" @bind="@newproduct.Alcohol" placeholder="@product.Alcohol" />
+
+            <br>
+        }
+        else
+        {
+            <input type="hidden" value="0" bind="@newproduct.Alcohol" />
+        }
+        <label>Lactos (Lactose)</label><br>
+        <input type="checkbox" @bind="@newproduct.Lactose" placeholder="@product.Lactose" /><br>
+        <label>Gluten (Gluten)</label><br>
+        <input type="checkbox" @bind="@newproduct.Gluten" placeholder="@product.Gluten" /><br>
+        <label>Vegan (Vegan)</label><br>
+        <input type="checkbox" @bind="@newproduct.Vegan" placeholder="@product.Vegan" /><br>
+        @if (CategoryList != null)
+        {
+            <select class="form-select" aria-label="Choose category" name="categoryId" id="category-dropdown" style="text-align: center; width: 25%;">
+                <option selected>Välj Categori (Pick Category)</option>
+                @foreach (var category in CategoryList)
+                {
+                    <option value="@category.Id" required>@category.Name</option>
+                }
+            </select>
+        }
+        <label>IsDeleted</label><br>
+        <input type="checkbox" @bind="@newproduct.IsDeleted" placeholder="@product.IsDeleted" /><br>
+        <input type="submit" value="Enter" />
+    </form>
+}

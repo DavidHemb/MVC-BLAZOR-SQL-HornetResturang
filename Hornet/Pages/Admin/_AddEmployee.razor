@@ -1,0 +1,62 @@
+﻿@using DataAccess.Models;
+@using Hornet.Service;
+@inject Hornet.Service.EmployeeService EmployeeService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@inject IJSRuntime JSRuntime
+@page "/_AddEmployee"
+@attribute [Authorize(Roles = "Admin")]
+
+<div class="modal" tabindex="-1" role="dialog" style="display: @(modelVisible ? "block" : "none")">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Employee</h5>
+                <button type="button" class="close" @onclick="CloseModel">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Employee Name</h5>
+                <input type="text" @bind="newEmployee.UserName" /> <br /><br />
+                <h5>Employee Department</h5>
+                <input type="text" @bind="newEmployee.Department" /> <br /><br />
+                <h5>Employee PhoneNumber</h5>
+                <input type="text" @bind="newEmployee.PhoneNumber" /> <br /><br />
+                <div class="form-check">
+                    <label class="form-check-label" for="isEmployed">
+                        Is Employed
+                    </label>
+                    <input class="form-check-input" type="checkbox" id="isEmployedCheckbox" @bind="newEmployee.IsEmployed" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CloseModel">Close</button>
+                <button type="button" class="btn btn-primary" @onclick="SaveChanges">Add New Employee</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public Employee newEmployee { get; set; } = new Employee();
+
+    [Parameter]
+    public EventCallback<Employee> OnCreate { get; set; }
+
+    bool modelVisible = false;
+
+    public async Task ShowModel()
+    {
+        modelVisible = true;
+    }
+    public void CloseModel()
+    {
+        modelVisible = false;
+    }
+    public async Task SaveChanges()
+    {
+        await OnCreate.InvokeAsync(newEmployee); 
+        CloseModel();
+    }
+}

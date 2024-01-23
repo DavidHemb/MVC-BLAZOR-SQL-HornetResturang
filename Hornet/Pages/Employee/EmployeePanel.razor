@@ -1,0 +1,352 @@
+﻿@using Hornet_Models.ModelsDTO;
+@using Hornet.Service;
+@using DataAccess.Models;
+@page "/Employee/EmployeePanel"
+@inject Hornet.Service.OrderProductsService orderProductService
+@inject Hornet.Service.ProductService productService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@attribute [Authorize(Roles = "Employee,Admin")]
+
+<div class="container">
+    <PageTitle>EmployeePanel</PageTitle>
+    <h1>Employee Panel</h1>
+
+    @if (EditProductToggled)
+    {
+        <h3>Edit products</h3>
+
+        <h4>Add a new product to this order</h4>
+
+        <br />
+
+        @if (ErrorMsg.Length > 0)
+        {
+            <p style="color: red;"><b>@ErrorMsg</b></p>
+        }
+        @if (Products != null && OrdersById != null)
+        {
+            <select @bind="SelectedProductId">
+                <option value="0" selected disabled>Select a product</option>
+                @foreach (var product in Products.Where(p => !OrdersById.Any(o => o.OrderProduct.ProductId == p.Id)))
+                {
+                    <option value="@product.Id">@product.Name</option>
+                }
+            </select>
+            <br />
+            <br />
+            <button class="btn btn-success" @onclick="() => AddProduct(SelectedProductId)" disabled="@selectedProductIds.Contains(SelectedProductId)">Add</button>
+        }
+
+        <br />
+        <br />
+
+        @if (OrdersById != null)
+        {
+
+            <h4>Manage existing products in order</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Products</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in OrdersById)
+                    {
+                        <tr>
+                            <td>@order.Product.Name</td>
+                            <td>@order.OrderProduct.Quantity <button class="btn btn-success" @onclick="() => IncrementQuantity(order)">+</button> <button class="btn btn-warning" @onclick="() => DecrementQuantity(order)">-</button> <button class="btn btn-danger" @onclick="() => RemoveProduct(order)">Remove</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+
+
+        <button class="btn btn-success" @onclick="() => ApplyChanges(OrdersById)">Save</button>
+        <br />
+        <br />
+
+        <button class="btn btn-primary" @onclick="BackToList">Back to orders</button>
+    }
+    else if (EditMessageToggled)
+    {
+        <h3>Edit message</h3>
+        @if (OrdersById != null)
+        {
+            <input type="text" @bind-value="@OrdersById.FirstOrDefault().Order.OrderMessage" @bind-value:event="oninput" />
+            <p>@OrdersById.FirstOrDefault().Order.OrderMessage</p>
+        }
+        <button class="btn btn-success" @onclick="() => SaveAndUploadMessage(OrdersById.FirstOrDefault().Order.OrderMessage)">Save</button>
+
+
+        <button class="btn btn-primary" @onclick="BackToList">Back to orders</button>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Order made</th>
+                    <th>Confirmed</th>
+                    <th>Takeaway</th>
+                    <th>Ready</th>
+                    <th>Customer</th>
+                    <th>Customers note</th>
+                    <th>Product(s) ordered</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (OrderProdDTO != null)
+                {
+                    @foreach (var group in OrderProdDTO.Where(op => op.Order.IsDeleted == false).OrderByDescending(op => op.Order.OrderDate).GroupBy(op => op.Order.Id))
+                    {
+                        <tr>
+                            <td>@group.First().Order.OrderDate</td>
+                            <td>
+                                @if (!group.First().Order.IsConfirmed)
+                                {
+                                    <button class="@((group.First().Order.IsConfirmed) ? "btn btn-success" : "btn btn-warning")" @onclick="() => ToggleConfirmationStatus(group.First().Order)">
+                                        @((group.First().Order.IsConfirmed) ? "Confirmed" : "Confirm")
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-success">Confirmed</button>
+                                }
+                            </td>
+                            <td>
+                                <button class="@((group.First().Order.IsTakeAway) ? "btn btn-success" : "btn btn-danger")" @onclick="() => ToggleIsTakeAway(group.First().Order)"> @((group.First().Order.IsTakeAway) ? "Yes" : "No")</button>
+                            </td>
+                            <td>
+                                <button class="@((group.First().Order.IsReady) ? "btn btn-success" : "btn btn-danger")" @onclick="() => ToggleIsReady(group.First().Order)"> @((group.First().Order.IsReady) ? "Yes" : "No")</button>
+
+                            </td>
+                            <td>@group.First().Customer.Email</td>
+                            <td>
+                                @group.First().Order.OrderMessage
+                                @if (group.First().Order.IsConfirmed == false)
+                                {
+                                    <button class="btn btn-primary" @onclick="() => ToggleEditMessage(group.First().Order.Id)">
+
+                                        @*A edit symbol*@
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                        </svg>
+
+                                    </button>
+                                }
+                            </td>
+                            <td>
+                                <ul>
+                                    @foreach (var item in group)
+                                    {
+                                        <li>@item.Product.Name x @item.OrderProduct.Quantity</li>
+                                    }
+
+
+                                </ul>
+                            </td>
+                            <td>
+                                @if (!group.First().Order.IsConfirmed)
+                                {
+                                    <button class="btn btn-primary" @onclick="() => ToggleEditProduct(group.First().Order.Id)">Manage products</button>
+                                }
+                            </td>
+                            <td>
+                                @if (!group.First().Order.IsConfirmed)
+                                {
+                                    <button class="btn btn-danger" @onclick="() => DeleteOrder(group.First())">Delete</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 20px auto; /* Centering and adding a margin of 20px around the page. */
+    }
+</style>
+
+
+
+@code{
+    private int OrderId;
+    private List<OrderDTO> OrderProdDTO;
+    private List<OrderDTO> OrdersById;
+    private List<Product>? Products;
+
+    private string ErrorMsg = "";
+    private List<int> selectedProductIds = new List<int>();
+    private int SelectedProductId;
+    private bool EditProductToggled = false;
+    private bool EditMessageToggled = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        OrderProdDTO = (List<OrderDTO>)await orderProductService.GetAll();
+        Products = (List<Product>)await productService.GetAll();
+    }
+    private async Task AddProduct(int prodId)
+    {
+        if(prodId == 0)
+        {
+            ErrorMsg = "Please pick a product to add first";
+        }
+        else
+        {
+            selectedProductIds.Add(prodId);
+            ErrorMsg = "";
+
+            //Get the needed info from the Orders and product info from the already made lists
+            var orderInfo = OrdersById.FirstOrDefault(x => x.Order.Id == OrderId);
+            var productInfo = Products.FirstOrDefault(x => x.Id == prodId);
+
+            OrderDTO orderDTO = new OrderDTO()
+                {
+                    OrderProduct = new OrderProduct(),
+                    Product = new Product(),
+                    Order = new Order()
+                };
+
+            orderDTO.OrderProduct.OrderId = OrderId;
+            orderDTO.OrderProduct.ProductId = prodId;
+            orderDTO.OrderProduct.Quantity = 1;
+            orderDTO.Product.Name = productInfo.Name;
+            orderDTO.Order.OrderMessage = orderInfo.Order.OrderMessage;
+
+            OrdersById.Add(orderDTO);
+        }
+    }
+    private async Task ApplyChanges(List<OrderDTO> orders)
+    {
+        await orderProductService.UpdateOrderProducts(orders);
+
+        OrderProdDTO = (List<OrderDTO>)await orderProductService.GetAll();
+        Products = (List<Product>)await productService.GetAll();
+
+        EditProductToggled = false;
+
+        //Reset error messsage
+        ErrorMsg = "";
+
+        await InvokeAsync(() => { });
+        StateHasChanged();
+    }
+    private void RemoveProduct(OrderDTO order)
+    {
+        OrdersById.Remove(order);
+    }
+    private void DecrementQuantity(OrderDTO order)
+    {
+        order.OrderProduct.Quantity = (order.OrderProduct.Quantity > 1) ? order.OrderProduct.Quantity - 1 : order.OrderProduct.Quantity;
+    }
+    private void IncrementQuantity(OrderDTO order)
+    {
+        order.OrderProduct.Quantity++;
+    }
+    private void BackToList()
+    {
+        if (EditProductToggled)
+            EditProductToggled = !EditProductToggled;
+        if (EditMessageToggled)
+            EditMessageToggled = !EditMessageToggled;
+    }
+    private async Task ToggleEditProduct(int orderId)
+    {
+        EditProductToggled = !EditProductToggled;
+
+        OrdersById = (List<OrderDTO>) await orderProductService.GetAllById(orderId);
+
+        OrderId = orderId;
+    }
+    private async Task ToggleEditMessage(int orderId)
+    {
+        EditMessageToggled = !EditMessageToggled;
+
+        OrdersById = (List<OrderDTO>)await orderProductService.GetAllById(orderId);
+
+        OrderId = orderId;
+    }
+    private void ToggleConfirmationStatus(Order order)
+    {
+        order.IsConfirmed = !order.IsConfirmed;
+        var updateOrder = ConfirmOrder(order);
+    }
+    private async Task ConfirmOrder(Order order)
+    {
+        try
+        {
+            var updatedOrder = await orderProductService.ConfirmOrder(order);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message); 
+            throw;
+        }
+    }
+    private async Task ToggleIsTakeAway(Order order)
+    {
+        order.IsTakeAway = !order.IsTakeAway;
+        await orderProductService.UpdateIsTakeAway(order);
+    }
+    private async Task ToggleIsReady(Order order)
+    {
+        order.IsReady = !order.IsReady;
+        await orderProductService.UpdateIsReady(order);
+    }
+    private async Task SaveAndUploadMessage(string updatedMessage)
+    {
+        try
+        {
+            var orderToUpdate = OrdersById.FirstOrDefault(x => x.Order.Id == OrderId);
+
+            Order order = orderToUpdate.Order;
+
+            order.OrderMessage = updatedMessage;
+
+            await orderProductService.UpdateOrderMessage(order);
+
+            OrderProdDTO = (List<OrderDTO>)await orderProductService.GetAll();
+            Products = (List<Product>)await productService.GetAll();
+
+            EditMessageToggled = false;
+
+            await InvokeAsync(() => { });
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
+    private async Task DeleteOrder(OrderDTO orderDTO)
+    {
+        try
+        {
+            Order order = orderDTO.Order;
+
+            await orderProductService.DeleteOrder(order);
+
+            OrderProdDTO = (List<OrderDTO>)await orderProductService.GetAll();
+            Products = (List<Product>)await productService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
+
+}
+

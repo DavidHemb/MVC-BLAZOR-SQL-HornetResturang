@@ -1,0 +1,132 @@
+﻿@page "/selectproduct/{orderId:int}"
+@page "/selectproduct"
+@using DataAccess.Data;
+@using DataAccess.Models
+@using DataAccess
+@using Microsoft.EntityFrameworkCore;
+@inject NavigationManager NavigationManager
+@inject Hornet.Service.ProductService ProductService
+@inject Hornet.Service.CategoryService CategoryService
+@inject Hornet.Service.ProductCategoryService ProductCategoryService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+<PageTitle>Lägg till produkt</PageTitle>
+
+
+@if (Products is null)
+{
+    <!--Show Loading... until the product is loaded-->
+    <div>Loading...   </div>
+}
+else
+{
+    <!-- Looping out the buttons for the categories -->
+    <div class="container" style="overflow-y: auto;">
+        <div class="categories-container">
+            @foreach (var category in Categories)
+            {
+                <!-- On click, reload the page with only the selected category Id -->
+                <NavLink class="category-button" href="@($"menu/productcategory/{category.Id}")">
+                    @category.Name
+                </NavLink>
+            }
+        </div>
+    </div>
+
+    <div class="container" style="overflow-y: auto;">
+        <div class="row">
+            @foreach (var item in Products)
+            {
+                if(item.IsDeleted == false)
+                {
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100">
+                            @if (item.ImagePath != null)
+                            {
+                                <img src="@item.ImagePath" class="card-img-top" alt="Card Image">
+                            }
+                            else
+                            {
+                                <img src="" class="card-img-top" alt="Card Image">
+                            }
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.Description</p>
+                            </div>
+                            <!--Add the selected product -->
+                             <div class="card-footer">
+                                <a href="@($"addselectedproduct/{orderId}/{item.Id}")" class="btn btn-success btn-block">+</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="mb-4"></div>
+
+}
+@code {
+
+
+    [Parameter]
+    public int orderId { get; set; }
+    public int categoryId { get; set; }
+
+    private List<Category>? Categories { get; set; }
+
+    public List<Product>? Products;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+
+        Categories = (List<Category>)await CategoryService.GetAllWithProducts();
+        if (categoryId > 0)
+        {
+            Products = (List<Product>)await ProductCategoryService.GetProductsByCategoryId(categoryId);
+        }
+        else
+        {
+            Products = (List<Product>)await ProductService.GetAll();
+        }
+    }
+
+
+
+
+}
+
+
+<style>
+    .categories-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .category-button {
+        margin: 5px;
+        padding: 10px;
+        background-color: lightgray;
+        color: black;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>

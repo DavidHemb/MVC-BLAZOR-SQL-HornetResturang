@@ -1,0 +1,126 @@
+﻿@using DataAccess.Models;
+@using Hornet.Service;
+@inject Hornet.Service.ProductService ProductService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@page "/ShowProducts"
+@attribute [Authorize(Roles = "Admin")]
+@code {
+    private List<Product>? Products;
+    protected override async Task OnInitializedAsync()
+    {
+        Products = (List<Product>)await ProductService.GetAll();
+    }
+    private void HandleFormSubmitUpdate(int productId)
+    {
+        ProductService.SetProductId(productId);
+        NavigationManager.NavigateTo("/UpdateProduct");
+    }
+    private void HandleFormSubmitDelete(int productId)
+    {
+        ProductService.SetProductId(productId);
+        NavigationManager.NavigateTo("/DeleteProduct");
+    }
+}
+<PageTitle>ShowProducts</PageTitle>
+<AdminHeader></AdminHeader>
+<h1 style="text-align:center;">Show Products</h1>
+<NavLink class="nav-link" href="AddProduct" style="text-align:center;">
+    <h4 style="color:darkblue;">Add Product</h4>
+</NavLink>
+    @if (Products != null)
+    {
+        <div style="display: grid;grid-template-columns: 1fr 1fr 1fr;text-align: center;">
+        @foreach (var product in Products)
+        {
+            @if (product.IsDeleted == false)
+            {
+                <div style="background-color:lightgray;border:2px solid black; border-radius: 16px; margin: 5%; padding: 5%;">
+                    <h5>@product.Name</h5>
+                    <p>@product.Description</p>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr;">
+                        <div>
+                            @if (product.ImagePath != null)
+                            {
+                                <img style="width:100%;" src="@product.ImagePath">
+                            }
+                            else
+                            {
+                                <img src="">
+                            }
+                        </div>
+                        <div>
+                            <p>Price: @product.Price kr</p>
+                            @if (product.Alcohol > 0)
+                            {
+                                <p>Alcohol: @product.Alcohol %</p>
+                            }
+                            <p>Lactose: @product.Lactose</p>
+                            <p>Gluten: @product.Gluten</p>
+                            <p>Vegan: @product.Vegan</p>
+                            <p>Deleted: @product.IsDeleted</p>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content: space-around; text-align:center;margin-top: 2%;">
+                        <form @onsubmit="() => HandleFormSubmitUpdate(product.Id)">
+                            <input type="hidden" id="productId" @bind="product.Id" />
+                            <button type="submit" style="color:darkblue; text-align:center;border-radius: 16px;">Update</button>
+                        </form>
+                        <form @onsubmit="() => HandleFormSubmitDelete(product.Id)">
+                            <input type="hidden" id="productId" @bind="product.Id" />
+                            <button type="submit" style="color:darkblue; text-align:center;border-radius: 16px;">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+        </div>
+        <div><hr></div>
+        <div><h4 style="text-align:center;">Is Deleted</h4></div>
+        <div><hr></div>
+        <div style="display: grid;grid-template-columns: 1fr 1fr 1fr;text-align: center;">
+        @foreach (var product in Products)
+        {
+            @if (product.IsDeleted == true)
+            {
+                <div style="background-color:lightgray;border:2px solid black; border-radius: 16px; margin: 5%; padding: 5%;">
+                    <h5>@product.Name</h5>
+                    <p>@product.Description</p>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr;">
+                        <div>
+                            @if (product.ImagePath != null)
+                            {
+                                <img style="width:100%;" src="@product.ImagePath">
+                            }
+                            else
+                            {
+                                <img src="">
+                            }
+                        </div>
+                        <div>
+                            <p>Price: @product.Price kr</p>
+                            @if (product.Alcohol > 0)
+                            {
+                                <p>Alcohol: @product.Alcohol %</p>
+                            }
+                            <p>Lactose: @product.Lactose</p>
+                            <p>Gluten: @product.Gluten</p>
+                            <p>Vegan: @product.Vegan</p>
+                            <p>Deleted: @product.IsDeleted</p>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content: space-around; text-align:center;">
+                        <form @onsubmit="() => HandleFormSubmitUpdate(product.Id)">
+                            <input type="hidden" id="productId" @bind="product.Id" />
+                            <button type="submit" style="color:darkblue; text-align:center;border-radius: 16px;">Update</button>
+                        </form>
+                        <form @onsubmit="() => HandleFormSubmitDelete(product.Id)">
+                            <input type="hidden" id="productId" @bind="product.Id" />
+                            <button type="submit" style="color:darkblue; text-align:center;border-radius: 16px;">Restore</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+        </div>
+    }

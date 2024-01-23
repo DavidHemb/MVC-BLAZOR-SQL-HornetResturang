@@ -1,0 +1,146 @@
+﻿@using DataAccess.Models;
+@using Hornet.Service;
+@inject Hornet.Service.CategoryService CategoryService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@inject IJSRuntime JSRuntime
+@page "/ShowCategories"
+@attribute [Authorize(Roles = "Admin")]
+@code
+{
+    public List<Category>? categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = (List<Category>)await CategoryService.GetAll();
+    }
+
+    async Task ConfirmDelete(int categoryId, string categoryName)
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the category '{categoryName}'?");
+
+        if (confirmed)
+        {
+            // Invoke a method to delete the category from your database or storage
+            await DeleteCategory(categoryId);
+        }
+    }
+
+    async Task DeleteCategory(int categoryId)
+    {
+        var response = await CategoryService.Delete(categoryId);
+
+        if (response)
+        {
+            categories = (List<Category>)await CategoryService.GetAll(); // Get all categorys after update.
+            StateHasChanged(); // Update the component to display the new categories.
+        }
+    }
+
+    Category selectedCategory = new Category(); // To keep the selected category for editing.
+
+    _EditCategory editModal;
+    _AddCategory createModal;
+
+    async void OpenEditModal(Category category)
+    {
+        selectedCategory = category;
+        await editModal.ShowModal();
+    }
+
+    async void OpenCreateModal()
+    {
+        await createModal.ShowModal();
+    }
+
+    async Task UpdateCategory(Category updatedCategory)
+    {
+        var existingCategory = categories.FirstOrDefault(c => c.Id != updatedCategory.Id &&
+                                                              c.Name.Equals(updatedCategory.Name, StringComparison.OrdinalIgnoreCase));
+
+        if (existingCategory != null)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Kategori Med Namnet '{updatedCategory.Name}' Finns Redan, Vänligen Använd Ett Annat Namn.");
+            categories = (List<Category>)await CategoryService.GetAll();
+            StateHasChanged();
+            return;
+        }
+
+        var response = await CategoryService.Update(updatedCategory);
+
+        if (response)
+        {
+            categories = (List<Category>)await CategoryService.GetAll();
+            StateHasChanged();
+        }
+    }
+
+    async Task CreateCategory(Category newCategory)
+    {
+        if (categories != null && categories.Any(c => c.Name.Equals(newCategory.Name, StringComparison.OrdinalIgnoreCase)))
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Kategori Med Namnet '{newCategory.Name}' Finns Redan, Vänligen Använd Ett Annat Namn.");
+            return;
+        }
+
+        var response = await CategoryService.Create(newCategory);
+
+        if (response)
+        {
+            categories = (List<Category>)await CategoryService.GetAll();
+            StateHasChanged();
+        }
+    }
+}
+}
+<div class="container">
+    <PageTitle>Alla Kategorier</PageTitle>
+    <AdminHeader></AdminHeader>
+    <h1 style="text-align:center;">Kategorier</h1>
+
+    @if (categories != null)
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Namn</th>
+                    <th scope="col">Drickbart</th>
+                    <th scope="col">Moms</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cat in categories)
+                {
+                    @if (!cat.IsDeleted)
+                    {
+                        <tr>
+                            <td>@cat.Id</td>
+                            <td>@cat.Name</td>
+                            <td>@cat.Liquid</td>
+                            <td>@cat.VatRate %</td>
+                            <td>
+                                <button class="btn-outline-success" @onclick="() => OpenEditModal(cat)">Ändra</button>
+                                <button class="btn-outline-danger" @onclick="@(() => ConfirmDelete(cat.Id, cat.Name))">Ta Bort</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                <_EditCategory @ref="editModal" editedCategory="selectedCategory" OnEdit="UpdateCategory"></_EditCategory>
+            </tbody>
+        </table>
+    }
+    <button class="btn btn-primary" @onclick="OpenCreateModal">Lägg Till Ny Kategori</button>
+    <_AddCategory @ref="createModal" OnCreate="CreateCategory"></_AddCategory>
+   
+
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 20px auto; /* Centering and adding a margin of 20px around the page */
+    }
+</style>

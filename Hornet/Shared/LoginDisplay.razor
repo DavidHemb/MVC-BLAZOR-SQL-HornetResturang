@@ -1,0 +1,251 @@
+﻿
+@using Hornet.Service;
+@using Microsoft.AspNetCore.Identity;
+@inject CartService CartService
+@inject UserManager<IdentityUser> UserManager
+
+ 
+
+<div class="flex-container-top">
+                <!--CART-->
+                <div>
+                   
+                        @if (CartService.CartItems.Count() != 0)
+                        {
+                            <NavLink class="nav-link" href="cart">
+                                <img class="cart-icon" src="/img/icons8-cart-48.png" width="40" height="40" />@CartService.CartItems.Count()
+                            </NavLink>
+                        }
+                        else
+                        {
+                            <NavLink class="nav-link" href="cart">
+                                <img class="cart-icon" src="/img/icons8-cart-48.png" width="40" height="40" />
+                            </NavLink>
+                        }
+                </div>
+                <!--PROFILE-->
+                <AuthorizeView>
+                    <Authorized>
+                        <div>
+                            <div class="dropdown">
+                                <button class="dropdown-button-profile">@context.User.Identity?.Name</button>
+                                <div class="dropdown-content">
+                                    <a href="Identity/Account/Manage">Profil</a>
+                                    <a href="MyOrders"> Mina beställningar</a>
+                                    @{
+                                        bool isEmployee = false;
+                                        if (context.User.IsInRole("Employee") || context.User.IsInRole("Admin"))
+                                        {
+                                            isEmployee = true;
+                                        }
+                                        if (isEmployee)
+                                        {
+                                        <a href="/Employee/EmployeePanel">Personal</a>
+ 
+                                        }
+                                    }
+                                    @{
+                                        bool isAdmin = context.User.IsInRole("Admin");
+                                        if (isAdmin)
+                                        {
+                                            <a href="AdminPanel">AdminPanel</a>
+               
+                                        }
+                                    }
+                                    <form method="post" action="Identity/Account/Logout">
+                                        <button type="submit" class="nav-link btn btn-link">Logga ut</button>
+                                    </form>
+                                </div>
+                            </div>
+         
+
+
+            </div>
+                    </Authorized>
+                    <NotAuthorized>
+                        <div>
+                            
+                             <NavLink class="nav-link" href="Identity/Account/Login">
+                                <img class="cart-icon" src="/img/icons8-person-64.png" width="40" height="40" />
+                            </NavLink>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
+
+                    
+                
+ </div>
+      
+
+            <!-- The bottom of header -->
+            <div class="flex-container-bottom">
+              
+                    <a href="opentime">ÖPPETTIDER</a>
+                    @* <div class="dropdown-content">
+                        <a href="#">Måndag-fredag: 10:00-23:00</a>
+                        <a href="#">Lördag-söndag: 12:00-23:00</a> *@
+         
+                     <a class="button" href="AboutUs">OM OSS</a>
+
+                    <a href="/">
+                        <div class="icon-container">
+                            <img class="icon" src="/img/logo.png">
+                            
+                        </div>
+                    </a>
+                    <a class="button" href="menuoverview">MENY</a>
+                    <a class="button" href="menu">BESTÄLL</a>
+            </div>
+
+
+<!--CSS-->
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .flex-container-top {
+        display: flex;
+        justify-content: flex-end;
+        background-color: black;
+        height: 4vh;
+    }
+
+        .flex-container-top > a {
+            background-color: black;
+            padding: 20px;
+            font-size: 15px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+        }
+
+    .flex-container-bottom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        height: 15vh;
+    }
+
+        .flex-container-bottom > a {
+            background-color: black;
+            width: 10%;
+            font-size: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+        }
+
+    .icon-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .icon {
+        width: 7vw;
+        height: auto;
+        margin: 0;
+        padding: 0;
+    }
+
+   
+
+
+    .cart-icon {
+        width: auto;
+        height: 21px;
+        margin: 0;
+        padding: 0px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0;
+    }
+
+    header {
+        background-color: #000;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+    }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+    }
+
+    .button {
+        background-color: black;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 10px;
+        padding-right: 20px;
+ 
+    
+    }
+
+    .dropdown-button-profile {
+        background-color: black;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+</style>
+  
+@code {
+    bool collapseNavMenu = true;
+    private bool expandSubNavSettings;
+    string baseMenuClass = "navbar-collapse d-sm-inline-flex flex-sm-row-reverse";
+    string NavMenuCssClass => baseMenuClass + (collapseNavMenu ? " collapse" : "");
+    void ToggleNavMenu()
+    {
+        if (!expandSubNavSettings)
+        {
+            collapseNavMenu = !collapseNavMenu;
+        }
+    }
+ }

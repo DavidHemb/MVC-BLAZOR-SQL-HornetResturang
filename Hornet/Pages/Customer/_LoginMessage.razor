@@ -1,0 +1,55 @@
+﻿@using DataAccess.Models;
+@using Hornet.Service;
+@inject Hornet.Service.CategoryService CategoryService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@inject IJSRuntime JSRuntime
+<!--Sanna-->
+
+<!--A modal that appear if you try to place a order when you not inlogged-->
+<div class="modal" tabindex="-1" role="dialog" style="display: @(modalVisible ? "block" : "none")">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Du är inte inloggad.</h2>
+                <!--Close window [X]-->
+                <button type="button" class="close" @onclick="CloseModal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--Message to user-->
+                <h5>Logga in för att kunna lägga en beställning.</h5>
+            </div>
+            <div class="modal-footer">
+                <!--Go to login-page-->
+                <a href="Identity/Account/Login" class="btn btn-success btn-block">Logga in</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public EventCallback<bool> OnModalVisibilityChanged { get; set; }
+
+    public bool modalVisible;
+
+    <!--Show window-->
+    public async Task ShowModal()
+    {
+        modalVisible = true;
+        await OnModalVisibilityChanged.InvokeAsync(modalVisible);
+        StateHasChanged();
+    }
+    <!--Close window-->
+    public void CloseModal()
+    {
+        modalVisible = false;
+        OnModalVisibilityChanged.InvokeAsync(modalVisible);
+        StateHasChanged();
+    }
+}
+
+

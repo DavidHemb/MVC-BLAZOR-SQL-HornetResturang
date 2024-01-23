@@ -1,0 +1,187 @@
+﻿@page "/cart"
+@using Hornet.Service;
+@using DataAccess.Models;
+@using Hornet_Models.ModelsDTO;
+@using System.Security.Claims;
+@using System.Text.Json;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject OrderService OrderService
+@inject CartService CartService
+@inject OrderProductsService OPService
+@inject NavigationManager NavigationManager
+<div class="container">
+   
+
+    <PageTitle>Cart</PageTitle>
+    <h3>Kundkorg</h3>
+
+    @if (CartService.GetTotalQuantity() > 0)
+    {
+        <table class="table">
+            <thead>
+                <!--The header of the table -->
+                <tr>
+                    <th>Produkt</th>
+                    <th></th>
+                    <th>Antal</th>
+                    <th></th>
+                    <th>Pris</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--Looping out all the rows in the cart -->
+                @foreach (var cartItem in CartService.GetCartItems())
+                {
+                    <tr>
+                        <td>@cartItem.Key.Name</td>
+                        <td>
+                            <div class="input-group-prepend">
+                                <!-- adjust the quantity for a specific product, decrease -->
+                                <button class="btn btn-outline-secondary" type="button"
+
+                                @onclick="() => CartService.DecreaseQuantity(cartItem.Key, cartItem.Value)">
+                                    -
+                                </button>
+                            </div>
+                        </td>
+                        <td>@cartItem.Value</td>
+                        <td>
+                            <div class="input-group-prepend">
+                                <!-- adjust the quantity for a specific product, increase -->
+                                <button class="btn btn-outline-secondary" type="button"
+                                @onclick="() => CartService.IncreaseQuantity(cartItem.Key, cartItem.Value)">
+                                    +
+                                </button>
+                            </div>
+                        </td>
+                        <!-- Calculate the price for the row, we only need two decimals -->
+                        <td>@(Math.Round(cartItem.Key.Price * cartItem.Value, 2).ToString("0.00"))</td>
+                        <td>
+                            <!-- Delete the product/products on this row -->
+                            <button class="btn btn-outline-danger"
+                            @onclick="() => CartService.RemoveFromCart(cartItem.Key)">
+                                Ta bort
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tbody>
+                <tr>
+                    <td>Summa</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>@((CartService.sum).ToString("0.00"))</td>
+                    <td>
+                        <!-- Delete everything in the cart -->
+                        <button class="btn btn-outline-danger"
+                        @onclick="() => CartService.ClearCart()">
+                            Töm varukorg
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <!-- A text-box where the customer can put a message to the resturant -->
+            <textarea @bind="CartService.OrderMessage" placeholder="Meddelande till resturangen..."
+                      style="width: 40%; height: 100%;"></textarea>
+        </div>
+        <!-- Confirm the order -->
+        <a @onclick="PlaceOrder" class="btn btn-primary">
+            Beställ
+        </a>
+    }
+    else
+    {
+        <!-- A message to the customer if the cart is empty -->
+        <p>Din kundvagn är tom.</p>
+    }
+
+
+
+   
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 20px auto; /* Centering and adding a margin of 20px around the page */
+    }
+</style>
+
+
+@code
+{
+    public string? orderMessage { get; set; }
+    public double sum;
+    public Dictionary<Product, int> cartItems { get; set; } = new Dictionary<Product, int>();
+    public bool IsTakeaway;
+
+
+    protected override void OnInitialized()
+    {
+        CartService.GetTotalQuantity();
+        CartService.CalculateTotal();
+    }
+
+    private async Task PlaceOrder()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var orderProducts = new List<OrderProductDTO>();
+        var message = CartService.OrderMessage;
+   
+
+        foreach (var cartItem in CartService.GetCartItems())
+        {
+            orderProducts.Add(new OrderProductDTO
+            {
+                 ProductId = cartItem.Key.Id,
+                 Quantity = cartItem.Value
+            });
+        }
+
+        var customer = new CustomerDTO
+        {
+                Email = "",
+                Id = user.FindFirstValue(ClaimTypes.NameIdentifier),
+                PhoneNumber = "",
+                UserName = ""
+        };
+
+        var CreateorderDTO = new CreateOrderDTO
+        {
+                CustomerDTO = customer,
+                CustomerId = user.FindFirstValue(ClaimTypes.NameIdentifier),
+                OrderProducts = orderProducts,
+                OrderMessage = message,
+                IsTakeAway = IsTakeaway
+        };
+
+
+        var result = await OrderService.Create(CreateorderDTO,
+                CartService);
+
+        if (!result.IsSuccessStatusCode)
+        {
+            var orderList = await OPService.GetAll();
+
+            if (orderList != null && orderList.Any())
+            {
+                var sortedOrderList = orderList.OrderBy(o => o.Order.Id).ToList();
+                int orderId = sortedOrderList.Last().Order.Id;
+
+                var encodedData = System.Text.Json.JsonSerializer.Serialize(orderProducts);
+
+                // Create a URL with both orderId and data as query parameters
+                var uri = $"/OrderConfirmation?orderId={orderId}&data={System.Net.WebUtility.UrlEncode(encodedData)}";
+
+                NavigationManager.NavigateTo(uri);
+            }
+        }
+    }
+
+}

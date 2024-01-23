@@ -1,0 +1,68 @@
+﻿@using DataAccess.Models;
+@using Hornet.Service;
+@inject Hornet.Service.CategoryService CategoryService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+@inject IJSRuntime JSRuntime
+@page "/AddCategory"
+@attribute [Authorize(Roles = "Admin")]
+@code
+{
+    public List<Category>? categories;
+    private Category newCategory = new Category { IsDeleted = false };
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = (List<Category>)await CategoryService.GetAll();
+    }
+    private async Task CreateCategory()
+    {
+        // Check if the category name already exists
+        if (categories != null && categories.Any(c => c.Name.Equals(newCategory.Name, StringComparison.OrdinalIgnoreCase)))
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Category with name '{newCategory.Name}' already exists.");
+            return;
+        }
+
+        await CategoryService.Create(newCategory);
+        NavigationManager.NavigateTo("/ShowCategories");
+    }
+}
+
+<PageTitle>All Categories</PageTitle>
+<AdminHeader></AdminHeader>
+<br />
+<h1 style="text-align:center;">Create New Category</h1>
+
+<div class="text-center">
+    <EditForm Model="@newCategory" OnValidSubmit="CreateCategory" class="mx-auto" style="max-width: 400px;">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <br />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group mb-2">
+                    <label for="name">Enter New Category Name:</label>
+                    <InputText id="name" @bind-Value="newCategory.Name" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group mb-2">
+                    <label>
+                        <input type="checkbox" @bind="@newCategory.Liquid" /> Is Liquid
+                    </label>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-10">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+

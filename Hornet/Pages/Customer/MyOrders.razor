@@ -1,0 +1,203 @@
+﻿@page "/MyOrders"
+@using Hornet_Models.ModelsDTO;
+@using Hornet.Service;
+@using DataAccess.Models;
+@using System.Security.Claims;
+@inject Hornet.Service.OrderProductsService orderProductService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient httpclient
+@inject CartService CartService
+@inject OrderService OrderService
+@inject IJSRuntime JSRuntime
+@inherits ComponentBase
+
+
+
+
+<div class="container">
+   
+
+    <PageTitle>My Orders</PageTitle>
+    <h1>Mina order</h1>
+    <!-- The header of the table -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ordernummer</th>
+                <th>Datum</th>
+                <th>Produkter</th>
+                <th>Summa</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (customerOrderProdDTO != null)
+            {
+                @foreach (var group in customerOrderProdDTO.GroupBy(op => op.Order.Id))
+                {
+                    double sum = 0;
+                    <tr>
+                        <!-- Loop out the orderinformation -->
+                        <td>@group.First().Order.Id</td>
+                        <td>@group.First().Order.OrderDate</td>
+                        <td>
+                            <ul>
+                                <!-- Loop out the products for the current order -->
+                                @foreach (var item in group)
+                                {
+                                    <p>@item.OrderProduct.Quantity x @item.Product.Name</p>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            @foreach (var item in group)
+                            {
+                                sum += @item.Product.Price * item.OrderProduct.Quantity;
+                            }
+                            <text>@sum.ToString("0.00") kr</text>
+                        </td>
+                        <!--Change order-->
+                        <td>
+                            @if (!group.First().Order.IsConfirmed)
+                            {
+                                <div class="">
+                                    <a href="@($"MyOrders/ChangeOrder/{group.First().Order.Id}")" class="btn btn-success btn-block">Ändra</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <p>Låst</p>
+                                @if (group.First().Order.IsConfirmed)
+                                {
+                                    <div class="">
+                                        <a @onclick="() => ShowReceipt(group.First().Order.Id)" class="btn btn-warning btn-block">Visa Kvitto</a>
+                                    </div>
+                                }
+                            }
+                        </td>
+                        <!--Delete order-->
+                        <td>
+                            @if (!group.First().Order.IsConfirmed)
+                            {
+                                <div class="">
+                                    <a @onclick="() => DeleteOrder(group.First().Order)" class="btn btn-danger btn-block">Ta bort</a>
+                                </div>
+                            }
+
+                        </td>
+                        <!--Show recepit-->
+                        <td>
+                            @if (!group.First().Order.IsConfirmed)
+                            {
+                                <div class="">
+                                    <a @onclick="() => ShowReceipt(group.First().Order.Id)" class="btn btn-warning btn-block">Visa Kvitto</a>
+                                </div>
+                            }
+
+                        </td>
+
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+ 
+
+   
+
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 20px auto; /* Centering and adding a margin of 20px around the page */
+    }
+</style>
+
+
+@code{
+    private List<OrderDTO> orderProdDTO;
+    private List<OrderDTO> customerOrderProdDTO;
+    private string customerId;
+    private double sum;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Load();
+    }
+    private async Task Load()
+    {
+        // Get all rows, from many to many table, orderProduct. CustomerId is included.
+        orderProdDTO = (List<OrderDTO>)await orderProductService.GetAll();
+
+        // Get the customerId from the current customer.
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        customerId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        // Filter out orderProduct-rows for the current cusotmer.
+        customerOrderProdDTO = orderProdDTO
+                                .Where(o => o.Customer.Id == customerId)
+                                .Where(o => o.Order.IsDeleted == false)
+                                .OrderByDescending(o => o.Order.Id).ToList();
+
+    }
+    private void ChangeOrder(Order order)
+    {
+        var updateOrder = UpdateOrder(order);
+    }
+
+    private async Task UpdateOrder(Order orderDTO)
+    {
+        try
+        {
+            var updatedOrder = await orderProductService.UpdateOrder(orderDTO);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
+    private async Task DeleteOrder(Order order)
+    {
+        // Popup - Ask the customer to confirm deleting.
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", $"Ta bort order'{order.Id}'?");
+
+        if (confirmed)
+        {
+            try
+            {
+                await orderProductService.DeleteOrder(order);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+        await Load();
+        NavigationManager.NavigateTo("MyOrders");
+    }
+
+    private async Task ShowReceipt(int orderId)
+    {
+        var prodToSend = customerOrderProdDTO.Where(c => c.Order.Id == orderId).Select(p => p.OrderProduct);
+
+        var encodedData = System.Text.Json.JsonSerializer.Serialize(prodToSend);
+
+        // Create URL with both orderId and data as query parameters
+        var uri = $"/OrderConfirmation?orderId={orderId}&data={System.Net.WebUtility.UrlEncode(encodedData)}";
+
+        NavigationManager.NavigateTo(uri);
+    }
+
+
+}
+

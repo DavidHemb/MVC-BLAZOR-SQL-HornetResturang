@@ -1,0 +1,96 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-Hornet-89e5e6af-41a4-4d4c-98b6-4715becf24dc</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\assets\img\bråkig-blåbärsbläckpatrull.jpg" />
+    <Content Remove="wwwroot\assets\img\brödrockad-baconbomb.jpg" />
+    <Content Remove="wwwroot\assets\img\Bubblig-Blandning-Buggchips.jpg" />
+    <Content Remove="wwwroot\assets\img\Chokladpuffade-Pretzelknyten.jpg" />
+    <Content Remove="wwwroot\assets\img\Chokladövertäckta-Ostbågar.jpg" />
+    <Content Remove="wwwroot\assets\img\fettisdubbelburgare.jpg" />
+    <Content Remove="wwwroot\assets\img\flottiga-friterade-lökloopar.jpg" />
+    <Content Remove="wwwroot\assets\img\Flottiga-Ostbollar.jpg" />
+    <Content Remove="wwwroot\assets\img\Frozzar-fizzz.jpg" />
+    <Content Remove="wwwroot\assets\img\Griniga-gröten-grogg.jpg" />
+    <Content Remove="wwwroot\assets\img\Grisgyttelicious-Gräddpaj.jpg" />
+    <Content Remove="wwwroot\assets\img\kladdkaka-kaskad.jpg" />
+    <Content Remove="wwwroot\assets\img\Kladdkakskrispiga-Kryddnötter.jpg" />
+    <Content Remove="wwwroot\assets\img\Klibbiga-Kycklingnaglar.jpg" />
+    <Content Remove="wwwroot\assets\img\Krispiga-Krispsmörvar.jpg" />
+    <Content Remove="wwwroot\assets\img\kräkfräck-kycklingknyckare.jpg" />
+    <Content Remove="wwwroot\assets\img\Lökpulverdränkta-Läskiga-Lakritsbitar.jpg" />
+    <Content Remove="wwwroot\assets\img\rödvinsrännstens.jpg" />
+    <Content Remove="wwwroot\assets\img\Saltlakrits-Sirapspopcorn.jpg" />
+    <Content Remove="wwwroot\assets\img\skummaskrubbsoda.jpg" />
+    <Content Remove="wwwroot\assets\img\Slemmig-sockershocktail.jpg" />
+    <Content Remove="wwwroot\assets\img\Smältande-smörkalv.jpg" />
+    <Content Remove="wwwroot\assets\img\Smörig-Skräpburgare.jpg" />
+    <Content Remove="wwwroot\assets\img\Snaskiga-Sillchips.jpg" />
+    <Content Remove="wwwroot\assets\img\Sockerstinna-Salta-Spretbönor.jpg" />
+    <Content Remove="wwwroot\assets\img\suröls-snuttarita.jpg" />
+    <Content Remove="wwwroot\assets\img\Svettig-Slaskkorv-Deluxe.jpg" />
+    <Content Remove="wwwroot\assets\img\Sötsliskig-Smältchoklad-Baconboll.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
+    <PackageReference Include="LiveCharts" Version="0.9.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\img\bråkig-blåbärsbläckpatrull.jpg" />
+    <None Include="wwwroot\assets\img\brödrockad-baconbomb.jpg" />
+    <None Include="wwwroot\assets\img\Bubblig-Blandning-Buggchips.jpg" />
+    <None Include="wwwroot\assets\img\Chokladpuffade-Pretzelknyten.jpg" />
+    <None Include="wwwroot\assets\img\Chokladövertäckta-Ostbågar.jpg" />
+    <None Include="wwwroot\assets\img\fettisdubbelburgare.jpg" />
+    <None Include="wwwroot\assets\img\flottiga-friterade-lökloopar.jpg" />
+    <None Include="wwwroot\assets\img\Flottiga-Ostbollar.jpg" />
+    <None Include="wwwroot\assets\img\Frozzar-fizzz.jpg" />
+    <None Include="wwwroot\assets\img\Griniga-gröten-grogg.jpg" />
+    <None Include="wwwroot\assets\img\Grisgyttelicious-Gräddpaj.jpg" />
+    <None Include="wwwroot\assets\img\kladdkaka-kaskad.jpg" />
+    <None Include="wwwroot\assets\img\Kladdkakskrispiga-Kryddnötter.jpg" />
+    <None Include="wwwroot\assets\img\Klibbiga-Kycklingnaglar.jpg" />
+    <None Include="wwwroot\assets\img\Krispiga-Krispsmörvar.jpg" />
+    <None Include="wwwroot\assets\img\kräkfräck-kycklingknyckare.jpg" />
+    <None Include="wwwroot\assets\img\Lökpulverdränkta-Läskiga-Lakritsbitar.jpg" />
+    <None Include="wwwroot\assets\img\rödvinsrännstens.jpg" />
+    <None Include="wwwroot\assets\img\Saltlakrits-Sirapspopcorn.jpg" />
+    <None Include="wwwroot\assets\img\skummaskrubbsoda.jpg" />
+    <None Include="wwwroot\assets\img\Slemmig-sockershocktail.jpg" />
+    <None Include="wwwroot\assets\img\Smältande-smörkalv.jpg" />
+    <None Include="wwwroot\assets\img\Smörig-Skräpburgare.jpg" />
+    <None Include="wwwroot\assets\img\Snaskiga-Sillchips.jpg" />
+    <None Include="wwwroot\assets\img\Sockerstinna-Salta-Spretbönor.jpg" />
+    <None Include="wwwroot\assets\img\suröls-snuttarita.jpg" />
+    <None Include="wwwroot\assets\img\Svettig-Slaskkorv-Deluxe.jpg" />
+    <None Include="wwwroot\assets\img\Sötsliskig-Smältchoklad-Baconboll.jpg" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,349 @@
+﻿@page "/OrderConfirmation"
+@using DataAccess.Models;
+@using Hornet_Models.ModelsDTO;
+@using Microsoft.AspNetCore.WebUtilities;
+@using System.Security.Claims;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject Hornet.Service.ProductService ProductService
+@inject Hornet.Service.OrderService OrderService
+@inject Hornet.Service.CategoryService CategoryService
+@inject Hornet.Service.ProductCategoryService ProductCategoryService
+@inject NavigationManager NavigationManager
+@*//rel="StyleSheet"*@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+@if (dataLoaded)
+{
+    <div class="page-content container">
+        <div class="page-header text-primary">
+            <h1 class="page-title text-secondary">
+                Kvitto
+                <small class="page-info">
+                    <i class="bi bi-chevron-double-right text-muted"></i>
+                    ID: #@orderId
+                </small>
+            </h1>
+
+            <div class="page-tools">
+                <div class="action-buttons">
+                    <a class="btn btn-light mx-1 text-dark" href="https://www.youtube.com/shorts/C9snxYBpptw" data-title="Print">
+                        <i class="bi bi-printer-fill text-primary mr-1"></i>
+                        Skriv Ut
+                    </a>
+                    <a class="btn btn-light mx-1 text-dark" href="https://www.youtube.com/shorts/z8xaQa2pA5c" data-title="PDF">
+                        <i class="bi bi-file-earmark-pdf text-danger mr-1"></i>
+                        Ladda Ner
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container px-0">
+            <div class="row mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center text-150">
+                            <i class="bi bi-btc text-success mr-1"></i>
+                            <br />
+                            <h3 class="text-muted">Hörnet Hamburgers & Fine Dining</h3>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="text-center text-150">
+                            <i class="bi bi-btc text-success mr-1"></i>
+                            <br />
+                                @if (order.Order.IsTakeAway)
+                                {
+                                    <h5 class="text-muted">
+                                        Avhämtning
+                                    </h5>
+                                }
+                            else
+                            {                                 
+                            <h5 class="text-muted">
+                                Bordservering
+                            </h5>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <hr class="row border-bottom mx-n1 mb-4" />
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div>
+                            <span class="text-sm text-muted align-middle">Mottagare:</span>
+                            <span class="text-600 text-110 text-muted align-middle">@order.Customer.UserName</span>
+                            <br />
+                            <span class="text-600 text-110 text-muted align-middle">@order.Customer.Email</span>
+                        </div>
+                        <div class="text-muted">
+                            <!-- <div class="my-1">
+                            @orderToDisplay.CustomerDTO.
+                            </div>
+                            <div class="my-1">
+                                State, Country
+                            </div> -->
+                            <div class="my-1"><i class="bi bi-telephone text-secondary"></i> <b class="text-600">@order.Customer.PhoneNumber</b></div>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+
+                    <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
+                        <hr class="d-sm-none" />
+                        <div class="text-muted">
+                            <div class="mt-1 mb-2 text-secondary text-600 text-125">
+                                Kvitto
+                            </div>
+
+                            <div class="my-2"><i class="bi bi-circle-fill text-primary text-xs mr-1"></i> <span class="text-600 text-muted text-90">OrderNr:</span> #@orderId</div>
+
+                            <div class="my-2"><i class="bi bi-circle-fill text-primary text-xs mr-1"></i> <span class="text-600 text-muted text-90">Datum:</span> @order.Order.OrderDate</div>
+
+                            <div class="my-2">
+                                <i class="bi bi-circle-fill text-primary text-xs mr-1"></i> <span class="text-600 text-muted text-90">Status: </span>
+                                @if (!order.Order.IsConfirmed)
+                                {
+                                    <span class="text text-warning">Ej Bekräftad</span>
+
+                                }
+                                else if (order.Order.IsConfirmed && !order.Order.IsReady)
+                                {
+                                    <span class="text text-success">Bekräftad</span>
+                                }
+                                else if (order.Order.IsConfirmed && order.Order.IsReady)
+                                {
+                                    <span class="text text-warning">Klar För Upphämtning</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="bg-light">
+                            <tr class="text-black">
+                                <th class="opacity-2">#</th>
+                                <th>Produkt</th>
+                                <th>Antal</th>
+                                <th>Styckpris</th>
+                                <th width="140">Summa</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="text-muted">
+                            <!-- Loop to display order details -->
+                            @foreach (var orderRow in prodToDisplay)
+                            {
+                                <tr>
+                                    <td>@counter</td>
+                                    <td>@orderRow.Name</td>
+                                    <td>@orderRow.Quantity</td>
+                                    <td class="text-95">@orderRow.Price</td>
+                                    <td class="text-muted">
+                                        @(
+                                            @orderRow.Price * orderRow.Quantity
+                                            )
+                                    </td>
+                                </tr>
+                                counter++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row mt-4">
+                    <!-- First section -->
+                    <div class="col-sm-7">
+                        <!-- Comments to the left -->
+                        <label for="kommentar" class="text-muted">Kommentar:</label>
+                        <div class="col-12 bg-light border rounded mt-2 p-3">
+                            <p>@order.Order.OrderMessage</p>
+                        </div>
+                    </div>
+
+                    <!-- second sectionen -->
+                    <div class="col-sm-5">
+                        <!-- information about "moms" to the right -->
+                        <div class="text-muted text-90">
+                            <div class="row my-2">
+                                <div class="col-7 text-right">
+                                    <strong>Moms %</strong>
+                                </div>
+                                <div class="col-2">
+                                    <strong>Antal</strong>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Momsunderlag</strong>
+                                </div>
+                            </div>
+                            <!-- Momsinformation -->
+                            @foreach (var item in vatRateCounts)
+                            {
+                                <div class="row my-2">
+                                    <div class="col-7 text-right">
+                                        @item.Key
+                                    </div>
+                                    <div class="col-2">
+                                        <span class="text-110 text-secondary-d1">@item.Value</span>
+                                    </div>
+                                    <div class="col-3">
+                                        @foreach(var orderRow in prodToDisplay)
+                                        {
+                                            if (orderRow.VatRate == item.Key)
+                                            {
+                                                vatPartial += (decimal)orderRow.Price;
+                                            }
+                                        }
+                                        @vatPartial
+                                        @{
+                                            // Reset vatPartial for the next iteration or use
+                                            vatPartial = 0;
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            <!-- HR to the right -->
+                            <hr class="d-none d-sm-block mt-3">
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-sm-7">
+                                <span class="text-150 text-success opacity-2">Att Betala: 
+                                    @foreach (var orderRow in prodToDisplay)
+                                    {
+                                        orderTotal += orderRow.Price * orderRow.Quantity;
+                                        vatTotal += ((decimal)orderRow.Price * ((decimal)orderRow.VatRate / 100)) * orderRow.Quantity;
+                                    }
+                                    @Math.Round((decimal)orderTotal,2):-
+                                </span>
+                                <div class="col-sm-7">
+                                <span class="text-100 text-success opacity-2">Varav Moms: 
+                                        @Math.Round(vatTotal,2):-
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+
+            <div>
+                <span class="text-muted text-105">Tack För Ditt Besök!</span>
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div>Hämtar Kvitto..</div>
+}
+
+@code {
+    private List<OrderProductDTO> prodToDisplay; // Current products to showcase.
+    private List<Category> categoryList; // Category list to include VAT rate on the receipt.
+    private List<ProductCategory> prodCatList; //Junction table to link the product to the correct category and VAT rate.
+    private OrderDTO order; // Current orders
+    private Dictionary<int?, int> vatRateCounts = new Dictionary<int?, int>(); // To calculate the VAT rate.
+
+
+    public int counter = 1;
+    public double? orderTotal = 0; // Total price for the order.
+    public decimal vatTotal = 0; // Total VAT for the order.
+    public decimal vatPartial = 0; // VAT base for the order.
+    private bool dataLoaded = false; // Flag to avoid displaying before all data has loaded.
+
+    int orderId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Take in AuthState to see who is logged in.
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        categoryList = (await CategoryService.GetAll()).ToList();
+        prodCatList = (await ProductCategoryService.GetProductCategories()).ToList();
+
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+
+        //Handle query parameters from the previous page.
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("orderId", out var orderIdValue))
+        {
+            //Parse orderId to fetch the correct order.
+            if (int.TryParse(orderIdValue, out int parsedOrderId))
+            {
+                orderId = parsedOrderId;
+                order = await OrderService.GetOrderByOrderId(orderId);
+                order.Customer = new CustomerDTO();
+                order.Customer.Id = user.FindFirstValue(ClaimTypes.NameIdentifier);
+                order.Customer.Email = user.FindFirstValue(ClaimTypes.Email);
+                order.Customer.UserName = user.FindFirstValue(ClaimTypes.Name);
+                order.Customer.PhoneNumber = user.FindFirstValue(ClaimTypes.MobilePhone);
+
+                dataLoaded = true; // Flag to indicate that all data has loaded.
+
+                //Deserialize the products in the query parameters from the previous page.
+                if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("data", out var data))
+                {
+                    var decodedData = System.Net.WebUtility.UrlDecode(data);
+
+                    //Deserialize and retrieve order data here.
+                    prodToDisplay = System.Text.Json.JsonSerializer.Deserialize<List<OrderProductDTO>>(decodedData);
+
+                    var productNames = (List<Product>)await ProductService.GetAll();
+
+                    foreach (var orderRow in prodToDisplay)
+                    {
+                        var product = productNames.FirstOrDefault(p => p.Id == orderRow.ProductId);
+                        if (product != null)
+                        {
+                            orderRow.Name = product.Name;
+                            orderRow.Price = product.Price;
+                        }
+
+                        // Find the corresponding product category in prodCatList.
+                        var productCategory = prodCatList.FirstOrDefault(pc => pc.ProductId == orderRow.ProductId);
+
+                        if (productCategory != null)
+                        {
+                            // Find the corresponding category from categoryList based on categoryId.
+                            var category = categoryList.FirstOrDefault(c => c.Id == productCategory.CategoryId);
+
+                            if (category != null && category.VatRate >= 0 && category.VatRate <= 25)
+                            {
+                                // If the category is found and has a VAT rate, use it for the product.
+                                int vatRate = category.VatRate;
+                                orderRow.VatRate = vatRate;
+                            }
+                            else
+                            {
+                                orderRow.VatRate = 0; // If the category is not found or lacks a VAT rate, set VAT to 0.
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        @*Function to calculate VAT on the various products. CREATE A PRICELIST WITH ID AND PRICE?*@
+        foreach (var item in prodToDisplay)
+        {
+            if (item.VatRate != null)
+            {
+                int? vatRate = Convert.ToInt32(item.VatRate);
+
+                if (vatRateCounts.ContainsKey(vatRate))
+                {
+                    vatRateCounts[vatRate] += item.Quantity; // Add the quantity of the product.
+                }
+                else
+                {
+                    vatRateCounts.Add(vatRate, item.Quantity);
+                }
+            }
+        }
+    }
+}

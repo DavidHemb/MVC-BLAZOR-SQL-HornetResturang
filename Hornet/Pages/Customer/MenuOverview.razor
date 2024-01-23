@@ -1,0 +1,96 @@
+﻿@page "/menuoverview"
+@using DataAccess.Data;
+@using DataAccess.Models
+@using DataAccess
+@using Microsoft.EntityFrameworkCore;
+@inject NavigationManager NavigationManager
+@inject Hornet.Service.ProductService ProductService
+@inject Hornet.Service.CategoryService CategoryService
+@inject Hornet.Service.ProductCategoryService ProductCategoryService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject HttpClient httpclient
+<PageTitle>Meny</PageTitle>
+
+@if (Categories is not null)
+{
+    <div class="container" style="overflow-y: auto;">
+        <div class="categories-container">
+            <!-- Print a header -->
+            <div class="menu-header">MENY</div>
+            @foreach (var category in Categories)
+            {
+                <!-- Loop out the Categories -->
+                <div class="menu-categories">@category.Name</div>
+                @if (products is not null)
+                {
+                    <!-- Loop out the Products in the current Category -->
+                    foreach (var item in products)
+                    {
+                        if (item.CategoryId == category.Id)
+                        {
+                            <p>@item.Product.Name  @item.Product.Price kr</p>
+                        }
+                    }
+                }
+                <p>---</p>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int categoryId { get; set; }
+
+    private List<Category>? Categories { get; set; }
+    public List<ProductCategory>? products;
+    private string selectedFilter = "None";
+    _LoginMessage loginMessage = new _LoginMessage();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        Categories = (List<Category>)await CategoryService.GetAllWithProducts();
+
+        if (Categories is not null)
+        {
+            products = (List<ProductCategory>)await CategoryService.GetAllWithProductsFull();
+        }
+    }
+}
+<style>
+    .container {
+        padding: 5%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5%;
+        font-family: 'menuFont', sans-serif;
+        font-size: 40px;
+        color: #cc9900;
+        background-color: #6e6c68;
+    }
+
+    .categories-container {
+        text-align: center;
+    }
+    .menu-header
+    {
+        padding: 10%;
+        font-size: 75px;
+    }
+
+    .menu-categories {
+        padding: 10%;
+        font-size: 60px;
+    }
+</style>

@@ -1,0 +1,179 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Hornet
+build_property.RootNamespace = Hornet
+build_property.ProjectDir = C:\Users\david\OneDrive\Skrivbord\Projekt\C#\MVC-BLAZOR-SQL-HornetResturang\Hornet\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\david\OneDrive\Skrivbord\Projekt\C#\MVC-BLAZOR-SQL-HornetResturang\Hornet
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/AboutUs.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWJvdXRVcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/AddCategory.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWRkQ2F0ZWdvcnkucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/AddProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWRkUHJvZHVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/AdminPanel.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWRtaW5QYW5lbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/CustomerTraffic.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ3VzdG9tZXJUcmFmZmljLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/DeleteProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGVsZXRlUHJvZHVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/ShowCategories.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2hvd0NhdGVnb3JpZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/ShowEmployees.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2hvd0VtcGxveWVlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/ShowProducts.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2hvd1Byb2R1Y3RzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/UpdateProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXBkYXRlUHJvZHVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/_AddCategory.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cX0FkZENhdGVnb3J5LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/_AddEmployee.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cX0FkZEVtcGxveWVlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/_EditCategory.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cX0VkaXRDYXRlZ29yeS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Admin/_EditEmployee.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cX0VkaXRFbXBsb3llZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/AddSelectedProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcQWRkU2VsZWN0ZWRQcm9kdWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/Cart.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcQ2FydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/ChangeOrder.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcQ2hhbmdlT3JkZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/Menu.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcTWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/MenuOverview.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcTWVudU92ZXJ2aWV3LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/MyOrders.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcTXlPcmRlcnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/OpenTime.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcT3BlblRpbWUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/OrderConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcT3JkZXJDb25maXJtYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/PlaceOrder.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcUGxhY2VPcmRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/SelectProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcU2VsZWN0UHJvZHVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Customer/_LoginMessage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJcX0xvZ2luTWVzc2FnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Employee/EmployeePanel.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wbG95ZWVcRW1wbG95ZWVQYW5lbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/IndexOld.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXhPbGQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Shared/AdminHeader.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEFkbWluSGVhZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Shared/Footer.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEZvb3Rlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Shared/LoginDisplay.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luRGlzcGxheS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Shared/LoginDisplayOld.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luRGlzcGxheU9sZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-y5brl5c6qs
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-19zr95183y
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Areas/Identity/Pages/Account/LogOut.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dPdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Areas/Identity/Pages/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/david/OneDrive/Skrivbord/Projekt/C\#/MVC-BLAZOR-SQL-HornetResturang/Hornet/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

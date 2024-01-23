@@ -1,0 +1,253 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\david\\.nuget\\packages\\chartjs.blazor.fork\\2.0.2\\contentFiles\\any\\netstandard2.1\\wwwroot\\ChartJsBlazorInterop.js",
+      "PackagePath": "staticwebassets\\ChartJsBlazorInterop.js"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\Hornet.bundle.scp.css",
+      "PackagePath": "staticwebassets\\Hornet.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\Font\\OFL.txt",
+      "PackagePath": "staticwebassets\\Font\\OFL.txt"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\Font\\SueEllenFrancisco-Regular.ttf",
+      "PackagePath": "staticwebassets\\Font\\SueEllenFrancisco-Regular.ttf"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\BelgiskGöte.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\BelgiskGöte.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\BubbensKokbok.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\BubbensKokbok.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\BubbligBärnrajs.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\BubbligBärnrajs.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\GötaLättöl.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\GötaLättöl.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\GöteGuld.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\GöteGuld.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\GötePorterExcellence.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\GötePorterExcellence.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\GöttigaCitrusspraket.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\GöttigaCitrusspraket.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\HärligPaleAle.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\HärligPaleAle.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\Hörnettshirt.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\Hörnettshirt.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\IngefärsNjutning.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\IngefärsNjutning.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\KlassiskGötePils.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\KlassiskGötePils.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\KoffeinfriCitronadSkval.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\KoffeinfriCitronadSkval.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\Krämig-Karamellkaos.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\Krämig-Karamellkaos.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\RödGöteAle.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\RödGöteAle.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\Skumma-Skrubbsoda.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\Skumma-Skrubbsoda.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\Snaskiga-Smultronskakern.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\Snaskiga-Smultronskakern.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\SurtGöte.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\SurtGöte.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\VästraStoutet.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\VästraStoutet.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\VästraVetet.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\VästraVetet.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\assets\\img\\ZeroSugarCola.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\ZeroSugarCola.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\StyleSheet.css",
+      "PackagePath": "staticwebassets\\css\\StyleSheet.css"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\open-iconic\\README.md",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\README.md"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\3burgers.jpg",
+      "PackagePath": "staticwebassets\\img\\3burgers.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\BabyTransport.jpg",
+      "PackagePath": "staticwebassets\\img\\BabyTransport.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\Hörnet.jpg",
+      "PackagePath": "staticwebassets\\img\\Hörnet.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\Japanese.jpg",
+      "PackagePath": "staticwebassets\\img\\Japanese.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\LazyTown Suprised.jpg",
+      "PackagePath": "staticwebassets\\img\\LazyTown Suprised.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\LinkedIn.jpg",
+      "PackagePath": "staticwebassets\\img\\LinkedIn.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\OveSundberg.jpg",
+      "PackagePath": "staticwebassets\\img\\OveSundberg.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\Tinder.png",
+      "PackagePath": "staticwebassets\\img\\Tinder.png"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\burgers3.jpg",
+      "PackagePath": "staticwebassets\\img\\burgers3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\emanuel.jpg",
+      "PackagePath": "staticwebassets\\img\\emanuel.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\facebook.png",
+      "PackagePath": "staticwebassets\\img\\facebook.png"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\gigachadlean.jpg",
+      "PackagePath": "staticwebassets\\img\\gigachadlean.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\hornetLogo.png",
+      "PackagePath": "staticwebassets\\img\\hornetLogo.png"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\icons8-burger-64.png",
+      "PackagePath": "staticwebassets\\img\\icons8-burger-64.png"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\icons8-cart-48.png",
+      "PackagePath": "staticwebassets\\img\\icons8-cart-48.png"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\icons8-person-64.png",
+      "PackagePath": "staticwebassets\\img\\icons8-person-64.png"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\instagram.jpg",
+      "PackagePath": "staticwebassets\\img\\instagram.jpg"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\logo.png",
+      "PackagePath": "staticwebassets\\img\\logo.png"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\logoBurger.png",
+      "PackagePath": "staticwebassets\\img\\logoBurger.png"
+    },
+    {
+      "Id": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\wwwroot\\img\\twitter.png",
+      "PackagePath": "staticwebassets\\img\\twitter.png"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.Hornet.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.Hornet.props",
+      "PackagePath": "build\\Hornet.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.Hornet.props",
+      "PackagePath": "buildMultiTargeting\\Hornet.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.Hornet.props",
+      "PackagePath": "buildTransitive\\Hornet.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
