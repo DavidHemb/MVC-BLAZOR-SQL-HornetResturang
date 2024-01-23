@@ -13734,11 +13734,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet.Test\\Hornet.Test.csproj",
+      "projectUniqueName": "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Hornet.Test\\Hornet.Test.csproj",
       "projectName": "Hornet.Test",
-      "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet.Test\\Hornet.Test.csproj",
+      "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Hornet.Test\\Hornet.Test.csproj",
       "packagesPath": "C:\\Users\\david\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet.Test\\obj\\",
+      "outputPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Hornet.Test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -13760,20 +13760,20 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Business\\Business.csproj": {
-              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Business\\Business.csproj"
+            "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Business\\Business.csproj": {
+              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Business\\Business.csproj"
             },
-            "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\DataAccess\\DataAccess.csproj": {
-              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\DataAccess\\DataAccess.csproj"
+            "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\DataAccess\\DataAccess.csproj": {
+              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\DataAccess\\DataAccess.csproj"
             },
-            "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\Hornet.csproj": {
-              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet\\Hornet.csproj"
+            "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Hornet\\Hornet.csproj": {
+              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Hornet\\Hornet.csproj"
             },
-            "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet_Models\\Hornet_Models.csproj": {
-              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet_Models\\Hornet_Models.csproj"
+            "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Hornet_Models\\Hornet_Models.csproj": {
+              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Hornet_Models\\Hornet_Models.csproj"
             },
-            "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet_Proj_API\\Hornet_Proj_API.csproj": {
-              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Hornet_Proj_API\\Hornet_Proj_API.csproj"
+            "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Hornet_Proj_API\\Hornet_Proj_API.csproj": {
+              "projectPath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Hornet_Proj_API\\Hornet_Proj_API.csproj"
             }
           }
         }

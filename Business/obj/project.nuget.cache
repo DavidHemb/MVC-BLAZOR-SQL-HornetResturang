@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZonjD8hI2M1qcxBpI0f+53ldLuic4hiO3HKZyzWUcF7t6QOJTb6ChudllVZL70EZgFKCKi2l4lgZaw9osWzdiA==",
+  "dgSpecHash": "odr4SuD75a3F6j67EhE5k7vi6T6N1ChP2Sxnz2gxghhD22ZloMyLbq1aylXupUDe0kGwVpMtQGd7WWd0SGqAkA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Skola Backend\\Lidkoping-Slutprojekt\\Slutprojekt\\Business\\Business.csproj",
+  "projectFilePath": "C:\\Users\\david\\OneDrive\\Skrivbord\\Projekt\\C#\\MVC-BLAZOR-SQL-HornetResturang\\Business\\Business.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\david\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\david\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
